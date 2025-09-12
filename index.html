@@ -26,7 +26,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10极速px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
@@ -73,12 +73,6 @@
             font-size: 3rem;
             color: #4b6cb7;
             margin-bottom: 15px;
-            animation: spin 1.5s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         
         .filters {
@@ -120,7 +114,7 @@
         .yearbook {
             flex: 2;
             display: grid;
-            grid-template-column极速s: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
         }
         
@@ -179,7 +173,7 @@
         .card-header {
             padding: 20px;
             text-align: center;
-            background: linear-gradient(90deg, #4b6cb7 极速0%, #182848 100%);
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
             color: white;
             position: relative;
         }
@@ -266,6 +260,11 @@
             animation: spin 1.5s linear infinite;
         }
         
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Modal Styles */
         .modal {
             display: none;
@@ -324,10 +323,9 @@
             color: #ffd700;
         }
         
-        /* Fixed modal photo styling */
-        .modal-photo-container {
-            width: 180px;
-            height: 180px;
+        .modal-photo {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             border: 5px solid white;
             margin: 0 auto 15px;
@@ -336,18 +334,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         
-        .modal-photo {
+        .modal-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        
-        .modal-photo-placeholder {
-            font-size: 4rem;
-            color: #7a93bb;
         }
         
         .modal-body {
@@ -445,26 +437,6 @@
             .modal-body {
                 grid-template-columns: 1fr;
             }
-            
-            .modal-photo-container {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .modal-photo-placeholder {
-                font-size: 3.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .modal-photo-container {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .modal-photo-placeholder {
-                font-size: 3rem;
-            }
         }
     </style>
 </head>
@@ -478,11 +450,12 @@
             <p>Celebrating our school memories together</p>
         </header>
         
-        <section class="loading-section" id="loadingSection">
+        <section class="loading-section">
+            <h2>Loading Alumni Data</h2>
             <div class="loading-content">
-                <i class="fas fa-spinner"></i>
-                <h3>Loading Alumni Data...</h3>
-                <p>Please wait while we load the yearbook information</p>
+                <i class="fas fa-spinner fa-spin"></i>
+                <h3>Loading data from CSV file...</h3>
+                <p>Loading: The Prestigious Staff School Abuloma _02 Set.csv</p>
             </div>
         </section>
         
@@ -498,7 +471,7 @@
                     <option value="Nursery 2B">Nursery 2B</option>
                     <option value="Primary 1A">Primary 1A</option>
                     <option value="Primary 1B">Primary 1B</option>
-                    <option value="Primary 1极速C">Primary 1C</option>
+                    <option value="Primary 1C">Primary 1C</option>
                     <option value="Primary 2A">Primary 2A</option>
                     <option value="Primary 2B">Primary 2B</option>
                     <option value="Primary 2C">Primary 2C</option>
@@ -506,10 +479,10 @@
                     <option value="Primary 3B">Primary 3B</option>
                     <option value="Primary 3C">Primary 3C</option>
                     <option value="Primary 4A">Primary 4A</option>
-                    <option value="极速Primary 4B">Primary 4B</option>
+                    <option value="Primary 4B">Primary 4B</option>
                     <option value="Primary 4C">Primary 4C</option>
                     <option value="Primary 5A">Primary 5A</option>
-                    <极速option value="Primary 5B">Primary 5B</option>
+                    <option value="Primary 5B">Primary 5B</option>
                     <option value="Primary 5C">Primary 5C</option>
                 </select>
             </div>
@@ -552,8 +525,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-close" id="modalClose">&times;</span>
-                <div class="modal-photo-container" id="modalPhotoContainer">
-                    <i class="fas fa-user modal-photo-placeholder"></i>
+                <div class="modal-photo" id="modalPhoto">
+                    <i class="fas fa-user fa-5x"></i>
                 </div>
                 <h2 id="modalName">Member Name</h2>
                 <div class="career" id="modalCareer">Engineer</div>
@@ -580,7 +553,7 @@
                     <p id="modalCareerText">Not available</p>
                 </div>
                 <div class="modal-info full-width">
-                    <h4><i class="fas fa-graduation-cap"></极速i> Class History</h4>
+                    <h4><i class="fas fa-graduation-cap"></i> Class History</h4>
                     <div class="class-history" id="modalClassHistory">
                         <!-- Class history badges will be added here -->
                     </div>
@@ -589,7 +562,7 @@
                     <h4><i class="fas fa-memory"></i> Favorite Memory</h4>
                     <p id="modalMemory">Winning the math competition</p>
                 </div>
-                <div class极速="modal-info full-width">
+                <div class="modal-info full-width">
                     <h4><i class="fas fa-user"></i> Short Bio</h4>
                     <p id="modalBio">Not available</p>
                 </div>
@@ -606,12 +579,11 @@
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
             const galleryContainer = document.getElementById('galleryContainer');
-            const loadingSection = document.getElementById('loadingSection');
-            const modalPhotoContainer = document.getElementById('modalPhotoContainer');
             
             // Modal elements
             const modalName = document.getElementById('modalName');
             const modalCareer = document.getElementById('modalCareer');
+            const modalPhoto = document.getElementById('modalPhoto');
             const modalSex = document.getElementById('modalSex');
             const modalSubject = document.getElementById('modalSubject');
             const modalHobby = document.getElementById('modalHobby');
@@ -631,21 +603,19 @@
                 'Primary 4', 'Primary 5'
             ];
             
-            // Load CSV from file
+            // Load CSV from local file
             function loadCSVFromFile() {
                 const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
                 
                 fetch(csvFile)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
+                            throw new Error('Failed to load CSV file. Make sure the file exists in the same folder as this HTML file.');
                         }
                         return response.text();
                     })
                     .then(data => {
                         processCSV(data);
-                        // Hide loading section after data is loaded
-                        loadingSection.style.display = 'none';
                     })
                     .catch(error => {
                         yearbook.innerHTML = `
@@ -656,8 +626,6 @@
                                 <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
                             </div>
                         `;
-                        // Hide loading section on error too
-                        loadingSection.style.display = 'none';
                     });
             }
             
@@ -674,7 +642,7 @@
                     if (lines[i].trim() === '') continue;
                     
                     // Using regex to handle commas within quoted fields
-                    const regex = /,(极速?=(?:(?:[^"]*"){2})*[^"]*$)/;
+                    const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
                     const parts = lines[i].split(regex);
                     
                     if (parts.length >= 11) { // At least the basic info + one class column
@@ -718,6 +686,9 @@
                 
                 renderYearbook(membersData);
                 updateClassGallery();
+                
+                // Hide loading section
+                document.querySelector('.loading-section').style.display = 'none';
             }
             
             // Render yearbook based on filters
@@ -733,8 +704,8 @@
                     );
                 }
                 
-                if (sex极速Value !== 'all') {
-                    filteredData = filteredData.filter(member => member.se极速x === sexValue);
+                if (sexValue !== 'all') {
+                    filteredData = filteredData.filter(member => member.sex === sexValue);
                 }
                 
                 yearbook.innerHTML = '';
@@ -834,17 +805,10 @@
                 modalCareer.textContent = member.career || 'Not available';
                 
                 // Set photo or icon
-                modalPhotoContainer.innerHTML = '';
                 if (member.photo && member.photo !== 'N/A') {
-                    const img = document.createElement('img');
-                    img.src = `https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500`;
-                    img.alt = member.name;
-                    img.className = 'modal-photo';
-                    modalPhotoContainer.appendChild(img);
+                    modalPhoto.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500" alt="${member.name}">`;
                 } else {
-                    const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal-photo-placeholder';
-                    modalPhotoContainer.appendChild(placeholder);
+                    modalPhoto.innerHTML = `<i class="fas fa-user fa-5x"></i>`;
                 }
                 
                 // Render class history
