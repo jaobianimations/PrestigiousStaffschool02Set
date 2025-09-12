@@ -508,7 +508,7 @@
                     <option value="Primary 4B">Primary 4B</option>
                     <option value="Primary 4C">Primary 4C</option>
                     <option value="Primary 5A">Primary 5A</option>
-                    <option value="Primary 5B">Primary 5极速B</option>
+                    <option value="Primary 5B">Primary 5B</option>
                     <option value="Primary 5C">Primary 5C</option>
                 </select>
             </div>
@@ -521,6 +521,11 @@
                     <option value="Female">Female</option>
                 </select>
             </div>
+            
+            <div class="filter-group">
+                <label for="searchInput">Search by Name:</label>
+                <input type="text" id="searchInput" placeholder="Enter name..." style="padding: 10px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem;">
+            </div>
         </div>
         
         <div class="content-container">
@@ -528,7 +533,7 @@
                 <div class="loading">
                     <i class="fas fa-spinner"></i>
                     <h3>Loading yearbook data...</h3>
-                    <p>Please wait while we process the CSV file</p>
+                    <p>Please wait while we process the data</p>
                 </div>
             </div>
             
@@ -601,6 +606,7 @@
             const yearbook = document.getElementById('yearbook');
             const classFilter = document.getElementById('classFilter');
             const sexFilter = document.getElementById('sexFilter');
+            const searchInput = document.getElementById('searchInput');
             const memberModal = document.getElementById('memberModal');
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
@@ -623,41 +629,115 @@
             let membersData = [];
             let classPictures = {};
             
-            // Define the class columns we expect in the CSV
-            const classColumns = [
-                'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
-                'Primary 1', 'Primary 2', 'Primary 3', 
-                'Primary 4', 'Primary 5'
+            // Sample data for demonstration (replace with your actual CSV loading)
+            const sampleData = [
+                {
+                    name: "Chinwe Okoro",
+                    sex: "Female",
+                    photo: "",
+                    favoriteSubject: "Mathematics",
+                    hobby: "Dancing",
+                    memory: "Winning the math competition in Primary 4",
+                    phone: "08012345678",
+                    career: "Engineer",
+                    bio: "A passionate engineer who loves solving complex problems.",
+                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2A", "Primary 3A", "Primary 4A", "Primary 5A"]
+                },
+                {
+                    name: "Emeka Nwankwo",
+                    sex: "Male",
+                    photo: "",
+                    favoriteSubject: "Science",
+                    hobby: "Football",
+                    memory: "Scoring the winning goal in inter-house sports",
+                    phone: "08087654321",
+                    career: "Doctor",
+                    bio: "Medical doctor with a passion for community health.",
+                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1B", "Primary 2B", "Primary 3B", "Primary 4B", "Primary 5B"]
+                },
+                {
+                    name: "Aisha Yusuf",
+                    sex: "Female",
+                    photo: "",
+                    favoriteSubject: "English",
+                    hobby: "Reading",
+                    memory: "Playing the lead role in our school drama",
+                    phone: "08055556666",
+                    career: "Lawyer",
+                    bio: "Human rights lawyer advocating for justice and equality.",
+                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
+                },
+                {
+                    name: "Tunde Ojo",
+                    sex: "Male",
+                    photo: "",
+                    favoriteSubject: "Art",
+                    hobby: "Painting",
+                    memory: "My painting being displayed in the school hall",
+                    phone: "08099998888",
+                    career: "Graphic Designer",
+                    bio: "Creative designer with a passion for visual storytelling.",
+                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1A", "Primary 2A", "Primary 3A", "Primary 4A", "Primary 5A"]
+                },
+                {
+                    name: "Funke Adebayo",
+                    sex: "Female",
+                    photo: "",
+                    favoriteSubject: "Music",
+                    hobby: "Singing",
+                    memory: "Leading the school choir to victory at the festival",
+                    phone: "08011112222",
+                    career: "Music Producer",
+                    bio: "Creating beautiful music that inspires people.",
+                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1B", "Primary 2B", "Primary 3B", "Primary 4B", "Primary 5B"]
+                },
+                {
+                    name: "Segun Balogun",
+                    sex: "Male",
+                    photo: "",
+                    favoriteSubject: "Physical Education",
+                    hobby: "Basketball",
+                    memory: "Winning the basketball championship",
+                    phone: "08033334444",
+                    career: "Sports Coach",
+                    bio: "Dedicated to nurturing young athletic talents.",
+                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
+                }
             ];
+            
+            // Initialize the application
+            function initApp() {
+                // Try to load from CSV first, if not available use sample data
+                loadCSVFromFile()
+                    .catch(error => {
+                        console.error("CSV loading failed, using sample data:", error);
+                        membersData = sampleData;
+                        processMembersData();
+                        loadingSection.style.display = 'none';
+                    });
+            }
             
             // Load CSV from file
             function loadCSVFromFile() {
-                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
-                
-                fetch(csvFile)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
-                        }
-                        return response.text();
-                    })
-                    .then(data => {
-                        processCSV(data);
-                        // Hide loading section after data is loaded
-                        loadingSection.style.display = 'none';
-                    })
-                    .catch(error => {
-                        yearbook.innerHTML = `
-                            <div class="no-data">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <h3>Error loading data</h3>
-                                <p>${error.message}</p>
-                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
-                            </div>
-                        `;
-                        // Hide loading section on error too
-                        loadingSection.style.display = 'none';
-                    });
+                return new Promise((resolve, reject) => {
+                    const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
+                    
+                    fetch(csvFile)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load CSV file. Using sample data instead.');
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            processCSV(data);
+                            loadingSection.style.display = 'none';
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
             }
             
             // Process CSV content
@@ -691,6 +771,12 @@
                         };
                         
                         // Process class history from separate columns
+                        const classColumns = [
+                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
+                            'Primary 1', 'Primary 2', 'Primary 3', 
+                            'Primary 4', 'Primary 5'
+                        ];
+                        
                         for (let j = 0; j < classColumns.length; j++) {
                             const className = classColumns[j];
                             const headerIndex = headers.indexOf(className);
@@ -715,16 +801,35 @@
                     }
                 }
                 
-                renderYearbook(membersData);
-                updateClassGallery();
+                processMembersData();
             }
             
-            // Render yearbook based on filters
-            function renderYearbook(data) {
+            // Process members data for display
+            function processMembersData() {
+                renderYearbook(membersData);
+                updateClassGallery();
+                
+                // Add event listeners to filters
+                classFilter.addEventListener('change', function() {
+                    filterMembers();
+                });
+                
+                sexFilter.addEventListener('change', function() {
+                    filterMembers();
+                });
+                
+                searchInput.addEventListener('input', function() {
+                    filterMembers();
+                });
+            }
+            
+            // Filter members based on selected criteria
+            function filterMembers() {
                 const classValue = classFilter.value;
                 const sexValue = sexFilter.value;
+                const searchValue = searchInput.value.toLowerCase();
                 
-                let filteredData = data;
+                let filteredData = membersData;
                 
                 if (classValue !== 'all') {
                     filteredData = filteredData.filter(member => 
@@ -736,9 +841,21 @@
                     filteredData = filteredData.filter(member => member.sex === sexValue);
                 }
                 
+                if (searchValue) {
+                    filteredData = filteredData.filter(member => 
+                        member.name.toLowerCase().includes(searchValue)
+                    );
+                }
+                
+                renderYearbook(filteredData);
+                updateClassGallery();
+            }
+            
+            // Render yearbook based on filtered data
+            function renderYearbook(data) {
                 yearbook.innerHTML = '';
                 
-                if (filteredData.length === 0) {
+                if (data.length === 0) {
                     yearbook.innerHTML = `
                         <div class="no-data">
                             <i class="fas fa-search"></i>
@@ -749,14 +866,13 @@
                     return;
                 }
                 
-                filteredData.forEach(member => {
+                data.forEach(member => {
                     const card = document.createElement('div');
                     card.className = `member-card ${member.sex.toLowerCase()}`;
-                    card.dataset.member = JSON.stringify(member);
                     
-                    // Use Google Drive photo if available, otherwise use placeholder
+                    // Use photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${getGoogleDriveImageUrl(member.photo)}" alt="${member.name}" class="member-photo">` : 
+                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
@@ -771,7 +887,7 @@
                             <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory || 'Not available'}"</p>
+                            <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
                         </div>
                     `;
                     
@@ -782,40 +898,6 @@
                     
                     yearbook.appendChild(card);
                 });
-            }
-            
-            // Extract Google Drive ID from URL and create proper image URL
-            function getGoogleDriveImageUrl(url) {
-                if (!url || url === 'N/A') return '';
-                
-                // Handle direct image URLs
-                if (url.includes('drive.google.com/uc?id=')) {
-                    return url;
-                }
-                
-                // Handle Google Drive share URLs
-                if (url.includes('drive.google.com/file/d/')) {
-                    const match = url.match(/\/file\/d\/([^\/]+)/);
-                    if (match && match[1]) {
-                        return `https://drive.google.com/uc?id=${match[1]}`;
-                    }
-                }
-                
-                // Handle Google Drive share URLs (alternative format)
-                if (url.includes('drive.google.com/open?id=')) {
-                    const match = url.match(/open\?id=([^&]+)/);
-                    if (match && match[1]) {
-                        return `https://drive.google.com/uc?id=${match[1]}`;
-                    }
-                }
-                
-                // Assume it's already a direct ID or we can't parse it
-                if (url.length < 30) {
-                    return `https://drive.google.com/uc?id=${url}`;
-                }
-                
-                // If we can't parse it, return a placeholder
-                return '';
             }
             
             // Update class gallery based on selected class
@@ -862,14 +944,12 @@
                 
                 // Set photo or icon
                 modalPhotoContainer.innerHTML = '';
-                const imageUrl = getGoogleDriveImageUrl(member.photo);
-                if (imageUrl) {
+                if (member.photo && member.photo !== 'N/A') {
                     const img = document.createElement('img');
-                    img.src = imageUrl;
+                    img.src = member.photo;
                     img.alt = member.name;
                     img.className = 'modal-photo';
                     img.onerror = function() {
-                        // If image fails to load, show placeholder
                         this.style.display = 'none';
                         const placeholder = document.createElement('i');
                         placeholder.className = 'fas fa-user modal-photo-placeholder';
@@ -878,7 +958,7 @@
                     modalPhotoContainer.appendChild(img);
                 } else {
                     const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal极速-photo-placeholder';
+                    placeholder.className = 'fas fa-user modal-photo-placeholder';
                     modalPhotoContainer.appendChild(placeholder);
                 }
                 
@@ -913,22 +993,8 @@
                 }
             });
             
-            // Add event listeners to filters
-            classFilter.addEventListener('change', function() {
-                if (membersData.length > 0) {
-                    renderYearbook(membersData);
-                    updateClassGallery();
-                }
-            });
-            
-            sexFilter.addEventListener('change', function() {
-                if (membersData.length > 0) {
-                    renderYearbook(membersData);
-                }
-            });
-            
-            // Load CSV data on page load
-            loadCSVFromFile();
+            // Initialize the application
+            initApp();
         });
     </script>
 </body>
