@@ -73,6 +73,12 @@
             font-size: 3rem;
             color: #4b6cb7;
             margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .filters {
@@ -167,7 +173,7 @@
         
         .member-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10极速px 25px rgba(0, 0, 0, 0.15);
         }
         
         .card-header {
@@ -236,7 +242,7 @@
         
         .no-data {
             text-align: center;
-            padding: 50px;
+            padding: 50极速px;
             grid-column: 1 / -1;
             color: #666;
         }
@@ -260,11 +266,6 @@
             animation: spin 1.5s linear infinite;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         /* Modal Styles */
         .modal {
             display: none;
@@ -285,7 +286,7 @@
             max-width: 900px;
             width: 90%;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-            animation: modalFade 0.3s;
+            animation: modal极速Fade 0.3s;
             overflow: hidden;
         }
         
@@ -311,7 +312,7 @@
         .modal-close {
             position: absolute;
             top: 20px;
-            right: 25px;
+            right极速: 25px;
             font-size: 1.8rem;
             color: white;
             cursor: pointer;
@@ -323,9 +324,9 @@
             color: #ffd700;
         }
         
-        .modal-photo {
-            width: 150px;
-            height: 150px;
+        .modal-photo-container {
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             border: 5px solid white;
             margin: 0 auto 15px;
@@ -334,12 +335,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         
-        .modal-photo img {
+        .modal-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        .modal-photo-placeholder {
+            font-size: 4rem;
+            color: #7a93bb;
         }
         
         .modal-body {
@@ -354,7 +361,7 @@
         }
         
         .modal-info h4 {
-            color: #4b6cb7;
+            color: #4极速b6cb7;
             margin-bottom: 8px;
             font-size: 1.1rem;
             display: flex;
@@ -435,7 +442,27 @@
             }
             
             .modal-body {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1极速fr;
+            }
+            
+            .modal-photo-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .modal-photo-placeholder {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-photo-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .modal-photo-placeholder {
+                font-size: 3rem;
             }
         }
     </style>
@@ -450,12 +477,11 @@
             <p>Celebrating our school memories together</p>
         </header>
         
-        <section class="loading-section">
-            <h2>Loading Alumni Data</h2>
+        <section class="loading-section" id="loadingSection">
             <div class="loading-content">
-                <i class="fas fa-spinner fa-spin"></i>
-                <h3>Loading data from CSV file...</h3>
-                <p>Loading: The Prestigious Staff School Abuloma _02 Set.csv</p>
+                <i class="fas fa-spinner"></i>
+                <h3>Loading Alumni Data...</h3>
+                <p>Please wait while we load the yearbook information</p>
             </div>
         </section>
         
@@ -477,7 +503,7 @@
                     <option value="Primary 2C">Primary 2C</option>
                     <option value="Primary 3A">Primary 3A</option>
                     <option value="Primary 3B">Primary 3B</option>
-                    <option value="Primary 3C">Primary 3C</option>
+                    <option value="Primary 3C">Primary 3极速C</option>
                     <option value="Primary 4A">Primary 4A</option>
                     <option value="Primary 4B">Primary 4B</option>
                     <option value="Primary 4C">Primary 4C</option>
@@ -502,11 +528,11 @@
                 <div class="loading">
                     <i class="fas fa-spinner"></i>
                     <h3>Loading yearbook data...</h3>
-                    <p>Please wait while we process the CSV file</p>
+                    <p>Please wait while we process the CSV file</极速p>
                 </div>
             </div>
             
-            <div class="class-gallery" id="classGallery">
+            <div class="class极速-gallery" id="classGallery">
                 <h2>Class Group Picture</h2>
                 <div class="gallery-container" id="galleryContainer">
                     <!-- Class picture will be loaded here -->
@@ -525,8 +551,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-close" id="modalClose">&times;</span>
-                <div class="modal-photo" id="modalPhoto">
-                    <i class="fas fa-user fa-5x"></i>
+                <div class="modal-photo-container" id="modalPhotoContainer">
+                    <i class="fas fa-user modal-photo-placeholder"></i>
                 </div>
                 <h2 id="modalName">Member Name</h2>
                 <div class="career" id="modalCareer">Engineer</div>
@@ -545,7 +571,7 @@
                     <p id="modalHobby">Dancing</p>
                 </div>
                 <div class="modal-info">
-                    <h4><i class="fas fa-phone"></i> Phone Number</h4>
+                    <h4><极速i class="fas fa-phone"></i> Phone Number</h4>
                     <p id="modalPhone">Not available</p>
                 </div>
                 <div class="modal-info">
@@ -579,11 +605,12 @@
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
             const galleryContainer = document.getElementById('galleryContainer');
+            const loadingSection = document.getElementById('loadingSection');
+            const modalPhotoContainer = document.getElementById('modalPhotoContainer');
             
             // Modal elements
             const modalName = document.getElementById('modalName');
             const modalCareer = document.getElementById('modalCareer');
-            const modalPhoto = document.getElementById('modalPhoto');
             const modalSex = document.getElementById('modalSex');
             const modalSubject = document.getElementById('modalSubject');
             const modalHobby = document.getElementById('modalHobby');
@@ -603,19 +630,21 @@
                 'Primary 4', 'Primary 5'
             ];
             
-            // Load CSV from local file
+            // Load CSV from file
             function loadCSVFromFile() {
                 const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
                 
                 fetch(csvFile)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Make sure the file exists in the same folder as this HTML file.');
+                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
                         }
                         return response.text();
                     })
                     .then(data => {
                         processCSV(data);
+                        // Hide loading section after data is loaded
+                        loadingSection.style.display = 'none';
                     })
                     .catch(error => {
                         yearbook.innerHTML = `
@@ -626,6 +655,8 @@
                                 <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
                             </div>
                         `;
+                        // Hide loading section on error too
+                        loadingSection.style.display = 'none';
                     });
             }
             
@@ -686,9 +717,6 @@
                 
                 renderYearbook(membersData);
                 updateClassGallery();
-                
-                // Hide loading section
-                document.querySelector('.loading-section').style.display = 'none';
             }
             
             // Render yearbook based on filters
@@ -728,12 +756,12 @@
                     
                     // Use Google Drive photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500" alt="${member.name}" class="member-photo">` : 
+                        `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(m极速ember.photo)}&sz=w500" alt="${member.name}" class="member-photo">` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
                         <div class="card-header">
-                            <div class="photo-container">
+                            <div极速 class="photo-container">
                                 ${photoContent}
                             </div>
                             <h3>${member.name}</h3>
@@ -805,10 +833,17 @@
                 modalCareer.textContent = member.career || 'Not available';
                 
                 // Set photo or icon
+                modalPhotoContainer.innerHTML = '';
                 if (member.photo && member.photo !== 'N/A') {
-                    modalPhoto.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500" alt="${member.name}">`;
+                    const img = document.createElement('img');
+                    img.src = `https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500`;
+                    img.alt = member.name;
+                    img.className = 'modal-photo';
+                    modalPhotoContainer.appendChild(img);
                 } else {
-                    modalPhoto.innerHTML = `<i class="fas fa-user fa-5x"></i>`;
+                    const placeholder = document.createElement('i');
+                    placeholder.className = 'fas fa-user modal-photo-placeholder';
+                    modalPhotoContainer.appendChild(placeholder);
                 }
                 
                 // Render class history
