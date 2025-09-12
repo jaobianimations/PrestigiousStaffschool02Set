@@ -154,7 +154,7 @@
             width: 100%;
             border-radius: 8px;
             margin-bottom: 10px;
-            box-shadow: 0 5极速px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .class-picture h3 {
@@ -173,7 +173,7 @@
         
         .member-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10极速px 25px rgba(0, 0, 0, 0.15);
         }
         
         .card-header {
@@ -229,11 +229,11 @@
         .card-body i {
             margin-right: 10px;
             color: #4b6cb7;
-            width极速: 20px;
+            width: 20px;
         }
         
         .male .card-header {
-            background: linear-gradient(90极速deg, #3498db 0%, #2c3e50 100%);
+            background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
         }
         
         .female .card-header {
@@ -242,7 +242,7 @@
         
         .no-data {
             text-align: center;
-            padding: 50px;
+            padding: 50极速px;
             grid-column: 1 / -1;
             color: #666;
         }
@@ -286,7 +286,7 @@
             max-width: 900px;
             width: 90%;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-            animation: modalFade 0.3s;
+            animation: modal极速Fade 0.3s;
             overflow: hidden;
         }
         
@@ -312,7 +312,7 @@
         .modal-close {
             position: absolute;
             top: 20px;
-            right: 25px;
+            right极速: 25px;
             font-size: 1.8rem;
             color: white;
             cursor: pointer;
@@ -320,7 +320,7 @@
             z-index: 1001;
         }
         
-极速        .modal-close:hover {
+        .modal-close:hover {
             color: #ffd700;
         }
         
@@ -361,7 +361,7 @@
         }
         
         .modal-info h4 {
-            color: #4b6cb7;
+            color: #4极速b6cb7;
             margin-bottom: 8px;
             font-size: 1.1rem;
             display: flex;
@@ -442,7 +442,7 @@
             }
             
             .modal-body {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1极速fr;
             }
             
             .modal-photo-container {
@@ -503,7 +503,7 @@
                     <option value="Primary 2C">Primary 2C</option>
                     <option value="Primary 3A">Primary 3A</option>
                     <option value="Primary 3B">Primary 3B</option>
-                    <option value="Primary 3C">Primary 3C</option>
+                    <option value="Primary 3C">Primary 3极速C</option>
                     <option value="Primary 4A">Primary 4A</option>
                     <option value="Primary 4B">Primary 4B</option>
                     <option value="Primary 4C">Primary 4C</option>
@@ -521,14 +521,6 @@
                     <option value="Female">Female</option>
                 </select>
             </div>
-            
-            <div class="filter-group">
-                <label for="sortFilter">Sort by:</label>
-                <select id="sortFilter">
-                    <option value="name">Name (A-Z)</option>
-                    <option value="class">Class History</option>
-                </select>
-            </div>
         </div>
         
         <div class="content-container">
@@ -536,11 +528,11 @@
                 <div class="loading">
                     <i class="fas fa-spinner"></i>
                     <h3>Loading yearbook data...</h3>
-                    <p>Please wait while we process the CSV file</p>
+                    <p>Please wait while we process the CSV file</极速p>
                 </div>
             </div>
             
-            <div class="class-gallery" id="classGallery">
+            <div class="class极速-gallery" id="classGallery">
                 <h2>Class Group Picture</h2>
                 <div class="gallery-container" id="galleryContainer">
                     <!-- Class picture will be loaded here -->
@@ -576,10 +568,10 @@
                 </div>
                 <div class="modal-info">
                     <h4><i class="fas fa-heart"></i> Hobby</h4>
-                    <p id="modalHobby">Dancing</极速p>
+                    <p id="modalHobby">Dancing</p>
                 </div>
                 <div class="modal-info">
-                    <h4><i class="fas fa-phone"></i> Phone Number</h4>
+                    <h4><极速i class="fas fa-phone"></i> Phone Number</h4>
                     <p id="modalPhone">Not available</p>
                 </div>
                 <div class="modal-info">
@@ -609,7 +601,6 @@
             const yearbook = document.getElementById('yearbook');
             const classFilter = document.getElementById('classFilter');
             const sexFilter = document.getElementById('sexFilter');
-            const sortFilter = document.getElementById('sortFilter');
             const memberModal = document.getElementById('memberModal');
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
@@ -714,7 +705,7 @@
                                     
                                     // Add to classPictures for gallery
                                     if (!classPictures[formattedClass]) {
-                                        class极速Pictures[formattedClass] = "";
+                                        classPictures[formattedClass] = "";
                                     }
                                 }
                             }
@@ -728,26 +719,10 @@
                 updateClassGallery();
             }
             
-            // Sort members based on selected criteria
-            function sortMembers(data, sortBy) {
-                if (sortBy === 'name') {
-                    return data.sort((a, b) => a.name.localeCompare(b.name));
-                } else if (sortBy === 'class') {
-                    return data.sort((a, b) => {
-                        // Get the earliest class for each member
-                        const aClass = a.classHistory[0] || '';
-                        const bClass = b.classHistory[0] || '';
-                        return aClass.localeCompare(bClass);
-                    });
-                }
-                return data;
-            }
-            
             // Render yearbook based on filters
             function renderYearbook(data) {
                 const classValue = classFilter.value;
                 const sexValue = sexFilter.value;
-                const sortValue = sortFilter.value;
                 
                 let filteredData = data;
                 
@@ -760,9 +735,6 @@
                 if (sexValue !== 'all') {
                     filteredData = filteredData.filter(member => member.sex === sexValue);
                 }
-                
-                // Sort the data
-                filteredData = sortMembers(filteredData, sortValue);
                 
                 yearbook.innerHTML = '';
                 
@@ -784,13 +756,12 @@
                     
                     // Use Google Drive photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${getGoogleDriveImageUrl(member.photo)}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"> 
-                         <div class="photo-placeholder" style="display: none;"><i class="fas fa-user fa-3x"></i></div>` : 
+                        `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(m极速ember.photo)}&sz=w500" alt="${member.name}" class="member-photo">` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
                         <div class="card-header">
-                            <div class="photo-container">
+                            <div极速 class="photo-container">
                                 ${photoContent}
                             </div>
                             <h3>${member.name}</h3>
@@ -800,7 +771,7 @@
                             <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') || 'Not available'}"</p>
+                            <p><i class="fas fa-memory"></i> "${member.memory || 'Not available'}"</p>
                         </div>
                     `;
                     
@@ -813,38 +784,10 @@
                 });
             }
             
-            // Extract Google Drive ID from URL and create proper image URL
-            function getGoogleDriveImageUrl(url) {
-                if (!url || url === 'N/A') return '';
-                
-                // Handle direct image URLs
-                if (url.includes('drive.google.com/uc?id=')) {
-                    return url;
-                }
-                
-                // Handle Google Drive share URLs
-                if (url.includes('drive.google.com/file/d/')) {
-                    const match = url.match(/\/file\/d\/([^\/]+)/);
-                    if (match && match[1]) {
-                        return `https://drive.google.com/uc?id=${match[1]}`;
-                    }
-                }
-                
-                // Handle Google Drive share URLs (alternative format)
-                if (url.includes('drive.google.com/open?id=')) {
-                    const match = url.match(/open\?id=([^&]+)/);
-                    if (match && match[1]) {
-                        return `https://drive.google.com/uc?id=${match[1]}`;
-                    }
-                }
-                
-                // Assume it's already a direct ID or we can't parse it
-                if (url.length < 30) {
-                    return `https://drive.google.com/uc?id=${url}`;
-                }
-                
-                // If we can't parse it, return a placeholder
-                return '';
+            // Extract Google Drive ID from URL
+            function extractGoogleDriveId(url) {
+                const match = url.match(/[-\w]{25,}/);
+                return match ? match[0] : null;
             }
             
             // Update class gallery based on selected class
@@ -891,19 +834,11 @@
                 
                 // Set photo or icon
                 modalPhotoContainer.innerHTML = '';
-                const imageUrl = getGoogleDriveImageUrl(member.photo);
-                if (imageUrl) {
+                if (member.photo && member.photo !== 'N/A') {
                     const img = document.createElement('img');
-                    img.src = imageUrl;
+                    img.src = `https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500`;
                     img.alt = member.name;
                     img.className = 'modal-photo';
-                    img.onerror = function() {
-                        // If image fails to load, show placeholder
-                        this.style.display = 'none';
-                        const placeholder = document.createElement('i');
-                        placeholder.className = 'fas fa-user modal-photo-placeholder';
-                        modalPhotoContainer.appendChild(placeholder);
-                    };
                     modalPhotoContainer.appendChild(img);
                 } else {
                     const placeholder = document.createElement('i');
@@ -951,12 +886,6 @@
             });
             
             sexFilter.addEventListener('change', function() {
-                if (membersData.length > 0) {
-                    renderYearbook(membersData);
-                }
-            });
-            
-            sortFilter.addEventListener('change', function() {
                 if (membersData.length > 0) {
                     renderYearbook(membersData);
                 }
