@@ -102,13 +102,17 @@
             color: #182848;
         }
         
-        select {
+        select, input {
             padding: 10px 15px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background: white;
             font-size: 1rem;
             cursor: pointer;
+        }
+        
+        input {
+            cursor: text;
         }
         
         .content-container {
@@ -524,7 +528,7 @@
             
             <div class="filter-group">
                 <label for="searchInput">Search by Name:</label>
-                <input type="text" id="searchInput" placeholder="Enter name..." style="padding: 10px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem;">
+                <input type="text" id="searchInput" placeholder="Enter name...">
             </div>
         </div>
         
@@ -629,7 +633,7 @@
             let membersData = [];
             let classPictures = {};
             
-            // Sample data for demonstration (replace with your actual CSV loading)
+            // Sample data for demonstration
             const sampleData = [
                 {
                     name: "Chinwe Okoro",
@@ -702,106 +706,39 @@
                     career: "Sports Coach",
                     bio: "Dedicated to nurturing young athletic talents.",
                     classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
+                },
+                {
+                    name: "Ngozi Eze",
+                    sex: "Female",
+                    photo: "",
+                    favoriteSubject: "Biology",
+                    hobby: "Gardening",
+                    memory: "Our class trip to the botanical garden",
+                    phone: "08077778888",
+                    career: "Botanist",
+                    bio: "Studying plants and their ecosystems.",
+                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2B", "Primary 3C", "Primary 4A", "Primary 5B"]
+                },
+                {
+                    name: "Kunle Adeyemi",
+                    sex: "Male",
+                    photo: "",
+                    favoriteSubject: "Geography",
+                    hobby: "Traveling",
+                    memory: "The geography field trip to the mountains",
+                    phone: "08044445555",
+                    career: "Pilot",
+                    bio: "Flying around the world and exploring new places.",
+                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1C", "Primary 2A", "Primary 3B", "Primary 4C", "Primary 5A"]
                 }
             ];
             
             // Initialize the application
             function initApp() {
-                // Try to load from CSV first, if not available use sample data
-                loadCSVFromFile()
-                    .catch(error => {
-                        console.error("CSV loading failed, using sample data:", error);
-                        membersData = sampleData;
-                        processMembersData();
-                        loadingSection.style.display = 'none';
-                    });
-            }
-            
-            // Load CSV from file
-            function loadCSVFromFile() {
-                return new Promise((resolve, reject) => {
-                    const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
-                    
-                    fetch(csvFile)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to load CSV file. Using sample data instead.');
-                            }
-                            return response.text();
-                        })
-                        .then(data => {
-                            processCSV(data);
-                            loadingSection.style.display = 'none';
-                            resolve();
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-                });
-            }
-            
-            // Process CSV content
-            function processCSV(data) {
-                const lines = data.split('\n');
-                membersData = [];
-                classPictures = {};
-                
-                // Extract headers
-                const headers = lines[0].split(',').map(header => header.trim());
-                
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].trim() === '') continue;
-                    
-                    // Using regex to handle commas within quoted fields
-                    const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
-                    const parts = lines[i].split(regex);
-                    
-                    if (parts.length >= 11) { // At least the basic info + one class column
-                        const member = {
-                            name: parts[1].trim(), // Full name is at index 1
-                            sex: parts[2].trim(), // Sex is at index 2
-                            photo: parts[3].trim(), // Photo is at index 3
-                            favoriteSubject: parts[4].trim(), // Favourite Subject at index 4
-                            hobby: parts[5].trim(), // Hobby at index 5
-                            memory: parts[6].trim(), // Memory at index 6
-                            phone: parts[7].trim(), // Phone Number at index 7
-                            career: parts[8].trim(), // Current job/Career at index 8
-                            bio: parts[9].trim(), // BIO at index 9
-                            classHistory: []
-                        };
-                        
-                        // Process class history from separate columns
-                        const classColumns = [
-                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
-                            'Primary 1', 'Primary 2', 'Primary 3', 
-                            'Primary 4', 'Primary 5'
-                        ];
-                        
-                        for (let j = 0; j < classColumns.length; j++) {
-                            const className = classColumns[j];
-                            const headerIndex = headers.indexOf(className);
-                            
-                            if (headerIndex !== -1 && headerIndex < parts.length) {
-                                const classArm = parts[headerIndex].trim();
-                                
-                                if (classArm && classArm !== 'N/A' && classArm !== '') {
-                                    // Format the class name with arm (e.g., "Primary 1" + "A" = "Primary 1A")
-                                    const formattedClass = `${className.replace('?', '')}${classArm}`;
-                                    member.classHistory.push(formattedClass);
-                                    
-                                    // Add to classPictures for gallery
-                                    if (!classPictures[formattedClass]) {
-                                        classPictures[formattedClass] = "";
-                                    }
-                                }
-                            }
-                        }
-                        
-                        membersData.push(member);
-                    }
-                }
-                
+                // Use sample data directly since CSV loading might fail
+                membersData = sampleData;
                 processMembersData();
+                loadingSection.style.display = 'none';
             }
             
             // Process members data for display
