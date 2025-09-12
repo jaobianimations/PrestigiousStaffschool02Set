@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff School FGGC Alumni Yearbook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .loading-section {
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .loading-content {
+            background: white;
+            border: 2px solid #4b6cb7;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        .loading-content i {
+            font-size: 3rem;
+            color: #4b6cb7;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #eef1f7;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #182848;
+        }
+        
+        select {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .content-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .yearbook {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .class-gallery {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            display: none;
+        }
+        
+        .class-gallery.visible {
+            display: block;
+        }
+        
+        .class-gallery h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #182848;
+            border-bottom: 2px solid #4b6cb7;
+            padding-bottom: 10px;
+        }
+        
+        .class-picture {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .class-picture img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px极速15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .class-picture h3 {
+            color: #4b6cb7;
+            font-size: 1.1rem;
+        }
+        
+        .member-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            position: relative;
+        }
+        
+        .photo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 4px solid white;
+            background: #c3cfe2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .member-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .card-header .career {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-body p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-body i {
+            margin-right: 10px;
+            color: #4b6cb极速7;
+            width: 20px;
+        }
+        
+        .male .card-header {
+            background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
+        }
+        
+        .female .card-header {
+            background: linear-gradient(90deg, #e91e63 0%, #9c27b0 100%);
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            grid-column: 1 / -1;
+            color: #666;
+        }
+        
+        .no-data i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            grid-column: 1 / -1;
+            color: #4b6cb7;
+        }
+        
+        .loading i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 90%;
+            box-shadow: 0 5px 30px rgba(0, 0, 极速0, 0.3);
+            animation: modalFade 0.3s;
+            overflow: hidden;
+        }
+        
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1001;
+        }
+        
+        .modal-极速close:hover {
+            color: #ffd700;
+        }
+        
+        .modal-photo {
+            width: 150极速px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            background: #c3cfe2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .modal-info {
+            margin-bottom: 20px;
+        }
+        
+        .modal-info h4 {
+            color: #4b6cb7;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .modal-info h4 i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .modal-info p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .class-history {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10极速px;
+        }
+        
+        .class-badge {
+            background: #eef1f7;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #4b6cb7;
+            border: 1px solid #c3cfe2;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #182848;
+            color: white;
+        }
+        
+        @media (max-width: 1024px) {
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .class-gallery {
+                order: -1;
+            }
+            
+            .gallery-container {
+                display: flex;
+                overflow-x: auto;
+                gap: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .class-picture {
+                min-width: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-group {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .yearbook {
+                grid-template-columns: 1fr;
+            }
+            
+极速            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>Staff School FGGC Alumni Yearbook</h1>
+            <p>Celebrating our school memories together</p>
+        </header>
+        
+        <section class="loading-section" id="loadingSection">
+            <div class="loading-content">
+                <i class="fas fa-spinner"></i>
+                <h3>Loading Alumni Data...</h3>
+                <p>Please wait while we load the yearbook information</p>
+            </div>
+        </section>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="classFilter">Filter by Class:</label>
+                <select id="classFilter">
+                    <option value="all">All Classes</option>
+                    <option value="Pre-Nursery">Pre-Nursery</option>
+                    <option value="Nursery 1A">Nursery 1A</option>
+                    <option value="Nursery 1B">Nursery 1B</option>
+                    <option value="Nursery 2A">Nursery 2极速A</option>
+                    <option value="Nursery 2B">Nursery 2B</option>
+                    <option value="Primary 1A">Primary 1A</option>
+                    <option value="Primary 1B">Primary 1B</option>
+                    <option value="Primary 1C">Primary 1C</option>
+                    <option value="Primary 2极速A">Primary 2A</option>
+                    <option value="Primary 2B">Primary 2B</option>
+                    <option value="Primary 2C">Primary 2C</option>
+                    <option value="Primary 3A">Primary 3A</option>
+                    <option value="Primary 3B">Primary 3B</option>
+                    <option value="Primary 3C">Primary 3C</option>
+                    <option value="Primary 4A">Primary 4A</option>
+                    <option value="Primary 4B">Primary 4B</option>
+                    <option value="Primary 4C">Primary 4C</option>
+                    <option value="Primary 5A">Primary 5A</option>
+                    <option value="Primary 5B">Primary 5B</option>
+                    <option value="Primary 5C">Primary 5C</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sexFilter">Filter by Sex:</label>
+                <select id="sexFilter">
+                    <option value="all">All</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="content-container">
+            <div class="yearbook" id="yearbook">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <h3>Loading yearbook data...</h3>
+                    <p>Please wait while we process the CSV file</p>
+                </div>
+            </div>
+            
+            <div class="class-gallery" id="classGallery">
+                <h2>Class Group Picture</h2>
+                <div class="gallery-container" id="galleryContainer">
+                    <!-- Class picture will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Created with ❤️ for Staff School FGGC WhatsApp Group</p>
+            <p>© 2023 Primary School Yearbook</p>
+        </footer>
+    </div>
+
+    <!-- Modal for detailed view -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-close" id="modalClose">&times;</span>
+                <div class="modal-photo"极速 id="modalPhoto">
+                    <i class="fas fa-user fa-5极速x"></i>
+                </div>
+                <h2 id="modalName">Member Name</h2>
+                <div class="career" id="modalCareer">Engineer</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <h4><i class="fas fa-venus-mars"></i> Sex</h4>
+                    <p id="modalSex">Female</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-book"></i> Favorite Subject</h4>
+                    <p id="modalSubject">Mathematics</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-heart"></极速i> Hobby</h4>
+                    <p id="modalHobby">Dancing</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-phone"></i> Phone Number</h4>
+                    <p id="modalPhone">Not available</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-briefcase"></i> Current Career</h4>
+                    <p id="modalCareerText">Not available</p>
+                </div>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-graduation-cap"></i> Class History</h4>
+                    <div class="class-history" id="modalClassHistory">
+                        <!-- Class history badges will be added here -->
+                    </div>
+                </div>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-memory"></i> Favorite Memory</h4>
+                    <p id="modalMemory">Winning the math competition</p>
+                </div>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-user"></i> Short Bio</h4>
+                    <p id="modalBio">Not available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearbook = document.getElementById('yearbook');
+            const classFilter = document.getElementById('classFilter');
+            const sexFilter = document.getElementById('sexFilter');
+            const memberModal = document.getElementById('memberModal');
+            const modalClose = document.getElementById('modalClose');
+            const classGallery = document.getElementById('classGallery');
+            const galleryContainer = document.getElementById('galleryContainer');
+            const loadingSection = document.getElementById('loadingSection');
+            
+            // Modal elements
+            const modalName = document.getElementById('modalName');
+            const modalCareer = document.getElementById('modalCareer');
+            const modalPhoto = document.getElementById('modalPhoto');
+            const modalSex = document.getElementById('modalSex');
+            const modalSubject = document.getElementById('modalSubject');
+            const modalHobby = document.getElementById('modalHobby');
+            const modalMemory = document.getElementById('modalMemory');
+            const modalPhone = document.getElementById('modalPhone');
+            const modalCareerText = document.getElementById('modalCareerText');
+            const modalBio = document.getElementById('modalBio');
+            const modalClassHistory = document.getElementById('modalClassHistory');
+            
+            let membersData = [];
+            let classPictures = {};
+            
+            // Define the class columns we expect in the CSV
+            const classColumns = [
+                'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
+                'Primary 1', 'Primary 2', 'Primary 3', 
+                'Primary 4', 'Primary 5'
+            ];
+            
+            // Load CSV from file
+            function loadCSVFromFile() {
+                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
+                
+                fetch(csvFile)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        processCSV(data);
+                        // Hide loading section after data is loaded
+                        loadingSection.style.display = 'none';
+                    })
+                    .catch(error => {
+                        yearbook.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h3>Error loading data</h3>
+                                <p>${error.message}</p>
+                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
+                            </div>
+                        `;
+                        // Hide loading section on error too
+                        loadingSection.style.display = 'none';
+                    });
+            }
+            
+            // Process CSV content
+            function processCSV(data) {
+                const lines = data.split('\n');
+                membersData = [];
+                classPictures = {};
+                
+                // Extract headers
+                const headers = lines[0].split(',').map(header => header.trim());
+                
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim() === '') continue;
+                    
+                    // Using regex to handle commas within quoted fields
+                    const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
+                    const parts = lines[i].split(regex);
+                    
+                    if (parts.length >= 11) { // At least the basic info + one class column
+                        const member = {
+                            name: parts[1].trim(), // Full name is at index 1
+                            sex: parts[2].trim(), // Sex is at index 2
+                            photo: parts[3].trim(), // Photo is at index 3
+                            favoriteSubject: parts[4].trim(), // Favourite Subject at index 4
+                            hobby: parts[5].trim(), // Hobby at index 5
+                            memory: parts[6].trim(), // Memory at index 6
+                            phone: parts[7].trim(), // Phone Number at index 7
+                            career: parts[8].trim(), // Current job/Career at index 8
+                            bio: parts[9].trim(), // BIO at index 9
+                            classHistory: []
+                        };
+                        
+                        // Process class history from separate columns
+                        for (let j = 0; j < classColumns.length; j++) {
+                            const className = classColumns[j];
+                            const headerIndex = headers.indexOf(className);
+                            
+                            if (headerIndex !== -1 && headerIndex < parts.length) {
+                                const classArm = parts[headerIndex].trim();
+                                
+                                if (classArm && classArm !== 'N/A' && classArm !== '') {
+                                    // Format the class name with arm (e.g., "Primary 1" + "A" = "Primary 1A")
+                                    const formattedClass = `${className.replace('?', '')}${classArm}`;
+                                    member.classHistory.push(formattedClass);
+                                    
+                                    // Add to classPictures for gallery
+                                    if (!class极速Pictures[formattedClass]) {
+                                        classPictures[formattedClass] = "";
+                                    }
+                                }
+                            }
+                        }
+                        
+                        membersData.push(member);
+                    }
+                }
+                
+                renderYearbook(membersData);
+                updateClassGallery();
+            }
+            
+            // Render yearbook based on filters
+            function renderYearbook(data) {
+                const classValue = classFilter.value;
+                const sexValue = sexFilter.value;
+                
+                let filteredData = data;
+                
+                if (classValue !== 'all') {
+                    filteredData = filteredData.filter(member => 
+                        member.classHistory.includes(classValue)
+                    );
+                }
+                
+                if (sexValue !== 'all') {
+                    filteredData = filteredData.filter(member => member.sex === sexValue);
+                }
+                
+                yearbook.innerHTML = '';
+                
+                if (filteredData.length === 0) {
+                    yearbook.innerHTML = `
+                        <极速div class="no-data">
+                            <i class="fas fa-search"></i>
+                            <h3>No members found</h3>
+                            <p>Try changing your filter criteria</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredData.forEach(member => {
+                    const card = document.createElement('div');
+                    card.className = `member-card ${member.sex.toLowerCase()}`;
+                    card.dataset.member = JSON.stringify(member);
+                    
+                    // Use Google Drive photo if available, otherwise use placeholder
+                    const photoContent = member.photo && member.photo !== 'N/A' ? 
+                        `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500" alt="${member.name}" class="member-photo">` : 
+                        `<i class="fas fa-user fa-3x"></i>`;
+                    
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="photo-container">
+                                ${photoContent}
+                            </div>
+                            <h3>${member.name}</h3>
+                            <div class="career">${member.career || 'Not available'}</div>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
+                            <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
+                            <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
+                            <p><i class="fas fa-memory"></i> "${member.memory || 'Not available'}"</p>
+                        </div>
+                    `;
+                    
+                    // Add click event to open modal
+                    card.addEventListener('click', function() {
+                        openMemberModal(member);
+                    });
+                    
+                    yearbook.appendChild(card);
+                });
+            }
+            
+            // Extract Google Drive ID from URL
+            function extractGoogleDriveId(url) {
+                const match = url.match(/[-\w]{25,}/);
+                return match ? match[0] : null;
+            }
+            
+            // Update class gallery based on selected class
+            function updateClassGallery() {
+                const classValue = classFilter.value;
+                
+                // Hide gallery if "All Classes" is selected
+                if (classValue === 'all') {
+                    classGallery.classList.remove('visible');
+                    return;
+                }
+                
+                // Show gallery for specific class
+                classGallery.classList.add('visible');
+                galleryContainer.innerHTML = '';
+                
+                // In a real implementation, you would have actual class picture URLs
+                // For demonstration, we're using placeholder images
+                const placeholderImage = `https://via.placeholder.com/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
+                
+                const classPicture = document.createElement('div');
+                classPicture.className = 'class-picture';
+                classPicture.innerHTML = `
+                    <img src="${placeholderImage}" alt="${classValue} Class Photo">
+                    <h3>${classValue} Class Photo</h3>
+                `;
+                
+                galleryContainer.appendChild(classPicture);
+            }
+            
+            // Open modal with member details
+            function openMemberModal(member) {
+                modalName.textContent = member.name;
+                modalSex.textContent = member.sex || 'Not available';
+                modalSubject.textContent = member.favoriteSubject || 'Not available';
+                modalHobby.textContent = member.hobby || 'Not available';
+                modalMemory.textContent = member.memory || 'Not available';
+                modalPhone.textContent = member.phone || 'Not available';
+                modalCareerText.textContent = member.career || 'Not available';
+                modalBio.textContent = member.bio || 'Not available';
+                
+                // Set career in the header
+                modalCareer.textContent = member.career || 'Not available';
+                
+                // Set photo or icon
+                if (member.photo && member.photo !== 'N/A') {
+                    modalPhoto.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500" alt="${member.name}">`;
+                } else {
+                    modalPhoto.innerHTML = `<i class="fas fa-user fa-5x"></i>`;
+                }
+                
+                // Render class history
+                modalClassHistory.innerHTML = '';
+                if (member.classHistory && member.classHistory.length > 0) {
+                    member.classHistory.forEach(className => {
+                        if (className) {
+                            const badge = document.createElement('span');
+                            badge.className = 'class-badge';
+                            badge.textContent = className;
+                            modalClassHistory.appendChild(badge);
+                        }
+                    });
+                } else {
+                    modalClassHistory.innerHTML = '<p>Not available</p>';
+                }
+                
+                // Show modal
+                memberModal.style.display = 'block';
+            }
+            
+            // Close modal
+            modalClose.addEventListener('click', function() {
+                memberModal.style.display = 'none';
+            });
+            
+            // Close modal if clicked outside
+            window.addEventListener('click', function(e) {
+                if (e.target === memberModal) {
+                    memberModal.style.display = 'none';
+                }
+            });
+            
+            // Add event listeners to filters
+            classFilter.addEventListener('change', function() {
+                if (membersData.length > 0) {
+                    renderYearbook(membersData);
+                    updateClassGallery();
+                }
+            });
+            
+            sexFilter.addEventListener('change', function() {
+                if (membersData.length > 0) {
+                    renderYearbook(membersData);
+                }
+            });
+            
+            // Load CSV data on page load
+            loadCSVFromFile();
+        });
+    </script>
+</body>
+</html>
