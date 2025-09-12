@@ -154,7 +154,7 @@
             width: 100%;
             border-radius: 8px;
             margin-bottom: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5极速px 15px rgba(0, 0, 0, 0.1);
         }
         
         .class-picture h3 {
@@ -229,11 +229,11 @@
         .card-body i {
             margin-right: 10px;
             color: #4b6cb7;
-            width: 20px;
+            width极速: 20px;
         }
         
         .male .card-header {
-            background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
+            background: linear-gradient(90极速deg, #3498db 0%, #2c3e50 100%);
         }
         
         .female .card-header {
@@ -320,7 +320,7 @@
             z-index: 1001;
         }
         
-        .modal-close:hover {
+极速        .modal-close:hover {
             color: #ffd700;
         }
         
@@ -508,7 +508,7 @@
                     <option value="Primary 4B">Primary 4B</option>
                     <option value="Primary 4C">Primary 4C</option>
                     <option value="Primary 5A">Primary 5A</option>
-                    <option value="Primary 5B">Primary 5极速B</option>
+                    <option value="Primary 5B">Primary 5B</option>
                     <option value="Primary 5C">Primary 5C</option>
                 </select>
             </div>
@@ -519,6 +519,14 @@
                     <option value="all">All</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sortFilter">Sort by:</label>
+                <select id="sortFilter">
+                    <option value="name">Name (A-Z)</option>
+                    <option value="class">Class History</option>
                 </select>
             </div>
         </div>
@@ -568,7 +576,7 @@
                 </div>
                 <div class="modal-info">
                     <h4><i class="fas fa-heart"></i> Hobby</h4>
-                    <p id="modalHobby">Dancing</p>
+                    <p id="modalHobby">Dancing</极速p>
                 </div>
                 <div class="modal-info">
                     <h4><i class="fas fa-phone"></i> Phone Number</h4>
@@ -601,6 +609,7 @@
             const yearbook = document.getElementById('yearbook');
             const classFilter = document.getElementById('classFilter');
             const sexFilter = document.getElementById('sexFilter');
+            const sortFilter = document.getElementById('sortFilter');
             const memberModal = document.getElementById('memberModal');
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
@@ -705,7 +714,7 @@
                                     
                                     // Add to classPictures for gallery
                                     if (!classPictures[formattedClass]) {
-                                        classPictures[formattedClass] = "";
+                                        class极速Pictures[formattedClass] = "";
                                     }
                                 }
                             }
@@ -719,10 +728,26 @@
                 updateClassGallery();
             }
             
+            // Sort members based on selected criteria
+            function sortMembers(data, sortBy) {
+                if (sortBy === 'name') {
+                    return data.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sortBy === 'class') {
+                    return data.sort((a, b) => {
+                        // Get the earliest class for each member
+                        const aClass = a.classHistory[0] || '';
+                        const bClass = b.classHistory[0] || '';
+                        return aClass.localeCompare(bClass);
+                    });
+                }
+                return data;
+            }
+            
             // Render yearbook based on filters
             function renderYearbook(data) {
                 const classValue = classFilter.value;
                 const sexValue = sexFilter.value;
+                const sortValue = sortFilter.value;
                 
                 let filteredData = data;
                 
@@ -735,6 +760,9 @@
                 if (sexValue !== 'all') {
                     filteredData = filteredData.filter(member => member.sex === sexValue);
                 }
+                
+                // Sort the data
+                filteredData = sortMembers(filteredData, sortValue);
                 
                 yearbook.innerHTML = '';
                 
@@ -756,7 +784,8 @@
                     
                     // Use Google Drive photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${getGoogleDriveImageUrl(member.photo)}" alt="${member.name}" class="member-photo">` : 
+                        `<img src="${getGoogleDriveImageUrl(member.photo)}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"> 
+                         <div class="photo-placeholder" style="display: none;"><i class="fas fa-user fa-3x"></i></div>` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
@@ -771,7 +800,7 @@
                             <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory || 'Not available'}"</p>
+                            <p><i class="fas fa-memory"></i> "${member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') || 'Not available'}"</p>
                         </div>
                     `;
                     
@@ -878,7 +907,7 @@
                     modalPhotoContainer.appendChild(img);
                 } else {
                     const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal极速-photo-placeholder';
+                    placeholder.className = 'fas fa-user modal-photo-placeholder';
                     modalPhotoContainer.appendChild(placeholder);
                 }
                 
@@ -922,6 +951,12 @@
             });
             
             sexFilter.addEventListener('change', function() {
+                if (membersData.length > 0) {
+                    renderYearbook(membersData);
+                }
+            });
+            
+            sortFilter.addEventListener('change', function() {
                 if (membersData.length > 0) {
                     renderYearbook(membersData);
                 }
