@@ -215,7 +215,7 @@
         .card-header .career {
             background: rgba(255, 255, 255, 0.2);
             padding: 3px 10px;
-            border-radius: 20px;
+            borderRadius: 20px;
             display: inline-block;
             font-size: 0.9rem;
         }
@@ -232,7 +232,7 @@
         
         .card-body i {
             margin-right: 10px;
-            color: #4b极速cb7;
+            color: #4b6cb7;
             width: 20px;
         }
         
@@ -241,7 +241,7 @@
         }
         
         .female .card-header {
-            background: linear-gradient(90deg, #e91e63 极速0%, #9c27b0 100%);
+            background: linear-gradient(90deg, #e91e63 0%, #9c27b0 100%);
         }
         
         .no-data {
@@ -253,7 +253,7 @@
         
         .no-data i {
             font-size: 4rem;
-            margin-bottom: 20极速px;
+            margin-bottom: 20px;
             color: #ccc;
         }
         
@@ -308,12 +308,12 @@
         .modal-header {
             padding: 25px;
             text-align: center;
-            background: linear-gradient(90极速deg, #4b6cb7 0%, #182848 100%);
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
             color: white;
             position: relative;
         }
         
-        .modal-极速close {
+        .modal-close {
             position: absolute;
             top: 20px;
             right: 25px;
@@ -364,7 +364,7 @@
             margin-bottom: 20px;
         }
         
-        .modal-info h极速4 {
+        .modal-info h4 {
             color: #4b6cb7;
             margin-bottom: 8px;
             font-size: 1.1rem;
@@ -450,7 +450,7 @@
             }
             
             .modal-photo-container {
-                width极速: 150px;
+                width: 150px;
                 height: 150px;
             }
             
@@ -478,7 +478,7 @@
                 <i class="fas fa-graduation-cap"></i>
             </div>
             <h1>Staff School FGGC Alumni Yearbook</h1>
-            <极速p>Celebrating our school memories together</p>
+            <p>Celebrating our school memories together</p>
         </header>
         
         <section class="loading-section" id="loadingSection">
@@ -501,8 +501,8 @@
                     <option value="Nursery 2B">Nursery 2B</option>
                     <option value="Primary 1A">Primary 1A</option>
                     <option value="Primary 1B">Primary 1B</option>
-                    <option value="Primary 1C">Primary 1极速C</option>
-                    <option value="Primary 2A">极速Primary 2A</option>
+                    <option value="Primary 1C">Primary 1C</option>
+                    <option value="Primary 2A">Primary 2A</option>
                     <option value="Primary 2B">Primary 2B</option>
                     <option value="Primary 2C">Primary 2C</option>
                     <option value="Primary 3A">Primary 3A</option>
@@ -535,7 +535,7 @@
         <div class="content-container">
             <div class="yearbook" id="yearbook">
                 <div class="loading">
-                    <i class="fas极速 fa-spinner"></i>
+                    <i class="fas fa-spinner"></i>
                     <h3>Loading yearbook data...</h3>
                     <p>Please wait while we process the CSV file</p>
                 </div>
@@ -572,7 +572,7 @@
                     <p id="modalSex">Female</p>
                 </div>
                 <div class="modal-info">
-                    <h4><i class="fas fa-book"></i> Favorite Subject</极速h4>
+                    <h4><i class="fas fa-book"></i> Favorite Subject</h4>
                     <p id="modalSubject">Mathematics</p>
                 </div>
                 <div class="modal-info">
@@ -583,7 +583,7 @@
                     <h4><i class="fas fa-phone"></i> Phone Number</h4>
                     <p id="modalPhone">Not available</p>
                 </div>
-                <极速div class="modal-info">
+                <div class="modal-info">
                     <h4><i class="fas fa-briefcase"></i> Current Career</h4>
                     <p id="modalCareerText">Not available</p>
                 </div>
@@ -808,7 +808,7 @@
                     
                     // Use photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
+                        `<img src="${member.photo}" alt="${member.photo}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
@@ -822,7 +822,7 @@
                         <div class="card-body">
                             <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
-                            <极速p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
+                            <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
                             <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
                         </div>
                     `;
