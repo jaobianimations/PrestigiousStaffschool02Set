@@ -865,69 +865,64 @@
             }
             
             // Open modal with member details
-            function openMemberModal(member) {
-                modalName.textContent = member.name;
-                modalSex.textContent = member.sex || 'Not available';
-                modalSubject.textContent = member.favoriteSubject || 'Not available';
-                modalHobby.textContent = member.hobby || 'Not available';
-                modalMemory.textContent = member.memory || 'Not available';
-                modalPhone.textContent = member.phone || 'Not available';
-                modalCareerText.textContent = member.career || 'Not available';
-                modalBio.textContent = member.bio || 'Not available';
-                
-                // Set career in the header
-                modalCareer.textContent = member.career || 'Not available';
-                
-                // Set photo or icon
-                modalPhotoContainer.innerHTML = '';
-                if (member.photo && member.photo !== 'N/A') {
-                    const img = document.createElement('img');
-                    img.src = member.photo;
-                    img.alt = member.name;
-                    img.className = 'modal-photo';
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                        const placeholder = document.createElement('i');
-                        placeholder.className = 'fas fa-user modal-photo-placeholder';
-                        modalPhotoContainer.appendChild(placeholder);
-                    };
-                    modalPhotoContainer.appendChild(img);
-                } else {
-                    const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal-photo-placeholder';
-                    modalPhotoContainer.appendChild(placeholder);
-                }
-                
-                // Render class history
-                modalClassHistory.innerHTML = '';
-                if (member.classHistory && member.classHistory.length > 0) {
-                    member.classHistory.forEach(className => {
-                        if (className) {
-                            const badge = document.createElement('span');
-                            badge.className = 'class-badge';
-                            badge.textContent = className;
-                            modalClassHistory.appendChild(badge);
-                        }
-                    });
-                } else {
-                    modalClassHistory.innerHTML = '<p>Not available</p>';
-                }
-                
-                // Show modal
-                memberModal.style.display = 'block';
-            }
-            
-            // Close modal
-            modalClose.addEventListener('click', function() {
-                memberModal.style.display = 'none';
-            });
-            
-            // Close modal if clicked outside
-            window.addEventListener('click', function(e) {
-                if (e.target === memberModal) {
-                    memberModal.style.display = 'none';
-                }
-            });
+function openMemberModal(member) {
+    modalName.textContent = member.name;
+    modalSex.textContent = member.sex || 'Not available';
+    modalSubject.textContent = member.favoriteSubject || 'Not available';
+    modalHobby.textContent = member.hobby || 'Not available';
+    modalMemory.textContent = member.memory || 'Not available';
+    modalPhone.textContent = member.phone || 'Not available';
+    modalCareerText.textContent = member.career || 'Not available';
+    modalBio.textContent = member.bio || 'Not available';
+    
+    // Set career in the header
+    modalCareer.textContent = member.career || 'Not available';
+
+    // Reset photo container
+    modalPhotoContainer.innerHTML = '';
+
+    if (member.photo && member.photo !== 'N/A') {
+        const img = document.createElement('img');
+        img.src = member.photo;
+        img.alt = member.name;
+        img.className = 'modal-photo';
+        img.onerror = function () {
+            modalPhotoContainer.innerHTML = '<i class="fas fa-user modal-photo-placeholder"></i>';
+        };
+        modalPhotoContainer.appendChild(img);
+    } else {
+        modalPhotoContainer.innerHTML = '<i class="fas fa-user modal-photo-placeholder"></i>';
+    }
+
+    // Populate class history
+    modalClassHistory.innerHTML = '';
+    if (member.classHistory && member.classHistory.length > 0) {
+        member.classHistory.forEach(cls => {
+            const badge = document.createElement('span');
+            badge.className = 'class-badge';
+            badge.textContent = cls;
+            modalClassHistory.appendChild(badge);
+        });
+    } else {
+        modalClassHistory.innerHTML = '<p>No class history available</p>';
+    }
+
+    // Show modal
+    memberModal.style.display = 'block';
+}
+
+// Close modal when X is clicked
+modalClose.addEventListener('click', () => {
+    memberModal.style.display = 'none';
+});
+
+// Close modal when clicking outside content
+window.addEventListener('click', (e) => {
+    if (e.target === memberModal) {
+        memberModal.style.display = 'none';
+    }
+});
+
             
             // Load CSV data on page load
             loadCSVFromFile();
@@ -935,6 +930,7 @@
     </script>
 </body>
 </html>
+
 
 
 
