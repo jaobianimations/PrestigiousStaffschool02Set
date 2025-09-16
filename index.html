@@ -808,7 +808,7 @@
                     
                     // Use photo if available, otherwise use placeholder
                     const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
+                        `<img src="${member.photo}" alt="${member.photo}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
@@ -935,6 +935,7 @@
     </script>
 </body>
 </html>
+
 
 
 
