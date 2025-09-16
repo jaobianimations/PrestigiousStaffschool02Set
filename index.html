@@ -698,7 +698,7 @@
                             const classArm = parts[j].trim();
                             if (classArm && classArm !== 'N/A' && classArm !== '') {
                                 // Get class name from header
-                                const className = headers[j] ? headers[j].replace('?', '') : `Class ${j-9}`;
+                                const className = headers[j] ? headers[j].replace('?', '') : `Class ${j-8}`;
                                 const formattedClass = `${className}${classArm}`;
                                 member.classHistory.push(formattedClass);
                                 
@@ -935,5 +935,6 @@
     </script>
 </body>
 </html>
+
 
 
