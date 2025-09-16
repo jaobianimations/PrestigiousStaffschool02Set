@@ -215,7 +215,7 @@
         .card-header .career {
             background: rgba(255, 255, 255, 0.2);
             padding: 3px 10px;
-            border-radius: 20px;
+            borderRadius: 20px;
             display: inline-block;
             font-size: 0.9rem;
         }
@@ -537,7 +537,7 @@
                 <div class="loading">
                     <i class="fas fa-spinner"></i>
                     <h3>Loading yearbook data...</h3>
-                    <p>Please wait while we process the data</p>
+                    <p>Please wait while we process the CSV file</p>
                 </div>
             </div>
             
@@ -633,112 +633,111 @@
             let membersData = [];
             let classPictures = {};
             
-            // Sample data for demonstration
-            const sampleData = [
-                {
-                    name: "Chinwe Okoro",
-                    sex: "Female",
-                    photo: "",
-                    favoriteSubject: "Mathematics",
-                    hobby: "Dancing",
-                    memory: "Winning the math competition in Primary 4",
-                    phone: "08012345678",
-                    career: "Engineer",
-                    bio: "A passionate engineer who loves solving complex problems.",
-                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2A", "Primary 3A", "Primary 4A", "Primary 5A"]
-                },
-                {
-                    name: "Emeka Nwankwo",
-                    sex: "Male",
-                    photo: "",
-                    favoriteSubject: "Science",
-                    hobby: "Football",
-                    memory: "Scoring the winning goal in inter-house sports",
-                    phone: "08087654321",
-                    career: "Doctor",
-                    bio: "Medical doctor with a passion for community health.",
-                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1B", "Primary 2B", "Primary 3B", "Primary 4B", "Primary 5B"]
-                },
-                {
-                    name: "Aisha Yusuf",
-                    sex: "Female",
-                    photo: "",
-                    favoriteSubject: "English",
-                    hobby: "Reading",
-                    memory: "Playing the lead role in our school drama",
-                    phone: "08055556666",
-                    career: "Lawyer",
-                    bio: "Human rights lawyer advocating for justice and equality.",
-                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
-                },
-                {
-                    name: "Tunde Ojo",
-                    sex: "Male",
-                    photo: "",
-                    favoriteSubject: "Art",
-                    hobby: "Painting",
-                    memory: "My painting being displayed in the school hall",
-                    phone: "08099998888",
-                    career: "Graphic Designer",
-                    bio: "Creative designer with a passion for visual storytelling.",
-                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1A", "Primary 2A", "Primary 3A", "Primary 4A", "Primary 5A"]
-                },
-                {
-                    name: "Funke Adebayo",
-                    sex: "Female",
-                    photo: "",
-                    favoriteSubject: "Music",
-                    hobby: "Singing",
-                    memory: "Leading the school choir to victory at the festival",
-                    phone: "08011112222",
-                    career: "Music Producer",
-                    bio: "Creating beautiful music that inspires people.",
-                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1B", "Primary 2B", "Primary 3B", "Primary 4B", "Primary 5B"]
-                },
-                {
-                    name: "Segun Balogun",
-                    sex: "Male",
-                    photo: "",
-                    favoriteSubject: "Physical Education",
-                    hobby: "Basketball",
-                    memory: "Winning the basketball championship",
-                    phone: "08033334444",
-                    career: "Sports Coach",
-                    bio: "Dedicated to nurturing young athletic talents.",
-                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
-                },
-                {
-                    name: "Ngozi Eze",
-                    sex: "Female",
-                    photo: "",
-                    favoriteSubject: "Biology",
-                    hobby: "Gardening",
-                    memory: "Our class trip to the botanical garden",
-                    phone: "08077778888",
-                    career: "Botanist",
-                    bio: "Studying plants and their ecosystems.",
-                    classHistory: ["Pre-Nursery", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2B", "Primary 3C", "Primary 4A", "Primary 5B"]
-                },
-                {
-                    name: "Kunle Adeyemi",
-                    sex: "Male",
-                    photo: "",
-                    favoriteSubject: "Geography",
-                    hobby: "Traveling",
-                    memory: "The geography field trip to the mountains",
-                    phone: "08044445555",
-                    career: "Pilot",
-                    bio: "Flying around the world and exploring new places.",
-                    classHistory: ["Pre-Nursery", "Nursery 1B", "Nursery 2B", "Primary 1C", "Primary 2A", "Primary 3B", "Primary 4C", "Primary 5A"]
-                }
-            ];
+            // Load CSV from file
+            function loadCSVFromFile() {
+                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
+                
+                fetch(csvFile)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        processCSV(data);
+                        // Hide loading section after data is loaded
+                        loadingSection.style.display = 'none';
+                    })
+                    .catch(error => {
+                        yearbook.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h3>Error loading data</h3>
+                                <p>${error.message}</p>
+                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
+                            </div>
+                        `;
+                        // Hide loading section on error too
+                        loadingSection.style.display = 'none';
+                    });
+            }
             
-            // Initialize the application
-            function initApp() {
-                // Use sample data directly since CSV loading might fail
-                membersData = sampleData;
+            // Process CSV content
+            function processCSV(data) {
+                const lines = data.split('\n');
+                membersData = [];
+                classPictures = {};
+                
+                // Extract headers
+                const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
+                
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim() === '') continue;
+                    
+                    // Remove quotes and parse the line
+                    const cleanLine = lines[i].replace(/"/g, '');
+                    const parts = parseCSVLine(cleanLine);
+                    
+                    if (parts.length >= headers.length) {
+                        const member = {
+                            name: parts[0].trim(),
+                            sex: parts[1].trim(),
+                            photo: parts[2].trim(),
+                            favoriteSubject: parts[3].trim(),
+                            hobby: parts[4].trim(),
+                            memory: parts[5].trim(),
+                            phone: parts[6].trim(),
+                            career: parts[7].trim(),
+                            bio: parts[8].trim(),
+                            classHistory: []
+                        };
+                        
+                        // Process class history from remaining columns
+                        for (let j = 9; j < parts.length; j++) {
+                            const classArm = parts[j].trim();
+                            if (classArm && classArm !== 'N/A' && classArm !== '') {
+                                // Get class name from header
+                                const className = headers[j] ? headers[j].replace('?', '') : `Class ${j-8}`;
+                                const formattedClass = `${className}${classArm}`;
+                                member.classHistory.push(formattedClass);
+                                
+                                // Add to classPictures for gallery
+                                if (!classPictures[formattedClass]) {
+                                    classPictures[formattedClass] = "";
+                                }
+                            }
+                        }
+                        
+                        membersData.push(member);
+                    }
+                }
+                
                 processMembersData();
-                loadingSection.style.display = 'none';
+            }
+            
+            // Parse CSV line considering commas within fields
+            function parseCSVLine(line) {
+                const result = [];
+                let inQuotes = false;
+                let currentField = '';
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        result.push(currentField);
+                        currentField = '';
+                    } else {
+                        currentField += char;
+                    }
+                }
+                
+                // Push the last field
+                result.push(currentField);
+                return result;
             }
             
             // Process members data for display
@@ -930,8 +929,8 @@
                 }
             });
             
-            // Initialize the application
-            initApp();
+            // Load CSV data on page load
+            loadCSVFromFile();
         });
     </script>
 </body>
