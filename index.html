@@ -681,20 +681,20 @@
                     
                     if (parts.length >= headers.length) {
                         const member = {
-                            name: parts[0].trim(),
-                            sex: parts[1].trim(),
-                            photo: parts[2].trim(),
-                            favoriteSubject: parts[3].trim(),
-                            hobby: parts[4].trim(),
-                            memory: parts[5].trim(),
-                            phone: parts[6].trim(),
-                            career: parts[7].trim(),
-                            bio: parts[8].trim(),
+                            name: parts[1].trim(),
+                            sex: parts[2].trim(),
+                            photo: parts[3].trim(),
+                            favoriteSubject: parts[4].trim(),
+                            hobby: parts[5].trim(),
+                            memory: parts[6].trim(),
+                            phone: parts[7].trim(),
+                            career: parts[8].trim(),
+                            bio: parts[9].trim(),
                             classHistory: []
                         };
                         
                         // Process class history from remaining columns
-                        for (let j = 9; j < parts.length; j++) {
+                        for (let j = 10; j < parts.length; j++) {
                             const classArm = parts[j].trim();
                             if (classArm && classArm !== 'N/A' && classArm !== '') {
                                 // Get class name from header
@@ -935,3 +935,4 @@
     </script>
 </body>
 </html>
+
