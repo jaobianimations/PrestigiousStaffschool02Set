@@ -6,570 +6,43 @@
     <title>Staff School FGGC Alumni Yearbook</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        /* ... (keep all your existing CSS styles) ... */
         
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        select, input {
-            width: 100%;
+        /* Add these styles for better image debugging */
+        .debug-info {
+            background: #f8f9fa;
             padding: 10px;
-            border: 1px solid #ddd;
+            margin: 10px 0;
             border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .search-box {
-            position: relative;
-        }
-        
-        .search-box i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #7f8c8d;
-        }
-        
-        .yearbook {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .member-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        
-        .member-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .member-card.male {
-            border-left: 5px solid #3498db;
-        }
-        
-        .member-card.female {
-            border-left: 5px solid #e84393;
-        }
-        
-        .card-header {
-            padding: 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .photo-container {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto 15px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .member-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .card-header h3 {
-            margin-bottom: 5px;
-            font-size: 1.3rem;
-        }
-        
-        .career {
-            font-style: italic;
-            opacity: 0.9;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        .card-body p {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-body i {
-            margin-right: 10px;
-            width: 20px;
-            color: #7f8c8d;
-        }
-        
-        .class-gallery {
-            margin-top: 40px;
-            display: none;
-        }
-        
-        .class-gallery.visible {
-            display: block;
-        }
-        
-        .gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        
-        .class-picture {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-        }
-        
-        .class-picture img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        
-        .class-picture h3 {
-            padding: 15px;
-            text-align: center;
-            color: #2c3e50;
-        }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .modal-content {
-            background: white;
-            margin: 50px auto;
-            max-width: 800px;
-            width: 90%;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .modal-photo-container {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .modal-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .modal-photo-placeholder {
-            font-size: 3rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .modal-header-text h2 {
-            margin-bottom: 5px;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .info-section {
-            margin-bottom: 25px;
-        }
-        
-        .info-section h3 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-            border-bottom: 2px solid #f1f1f1;
-            padding-bottom: 5px;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .info-item i {
-            margin-right: 10px;
-            margin-top: 3px;
-            color: #7f8c8d;
-            width: 20px;
-        }
-        
-        .class-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .class-badge {
-            background: #3498db;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
             font-size: 0.9rem;
+            color: #666;
         }
         
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            grid-column: 1 / -1;
-        }
-        
-        .no-data i {
-            font-size: 3rem;
-            color: #7f8c8d;
-            margin-bottom: 15px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            grid-column: 1 / -1;
-        }
-        
-        .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #3498db;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 99;
-        }
-        
-        .back-to-top.visible {
-            opacity: 1;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
-        }
-        
-        @media (max-width: 768px) {
-            .modal-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .modal-photo-container {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
+        .url-display {
+            word-break: break-all;
+            background: #e9ecef;
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Staff School FGGC Alumni Yearbook</h1>
-            <p class="subtitle">Celebrating our shared memories and achievements</p>
-        </header>
+        <!-- ... (keep your existing HTML structure) ... -->
         
-        <div class="controls">
-            <div class="filter-group">
-                <label for="classFilter">Filter by Class:</label>
-                <select id="classFilter">
-                    <option value="all">All Classes</option>
-                    <option value="Pre-Nursery">Pre-Nursery</option>
-                    <option value="Nursery 1">Nursery 1</option>
-                    <option value="Nursery 2">Nursery 2</option>
-                    <option value="Primary 1">Primary 1</option>
-                    <option value="Primary 2">Primary 2</option>
-                    <option value="Primary 3">Primary 3</option>
-                    <option value="Primary 4">Primary 4</option>
-                    <option value="Primary 5">Primary 5</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label for="sexFilter">Filter by Gender:</label>
-                <select id="sexFilter">
-                    <option value="all">All Genders</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-            
-            <div class="filter-group search-box">
-                <label for="searchInput">Search by Name:</label>
-                <input type="text" id="searchInput" placeholder="Enter name...">
-                <i class="fas fa-search"></i>
-            </div>
+        <!-- Add a debug section -->
+        <div id="debugSection" style="display: none; margin: 20px 0; padding: 15px; background: #fff3cd; border-radius: 5px;">
+            <h3><i class="fas fa-bug"></i> Debug Information</h3>
+            <div id="debugContent"></div>
         </div>
-        
-        <section id="loadingSection" class="loading">
-            <div class="loading-spinner"></div>
-            <h3>Loading Alumni Data...</h3>
-            <p>Please wait while we load the yearbook information</p>
-        </section>
-        
-        <div id="yearbook" class="yearbook">
-            <!-- Member cards will be dynamically inserted here -->
-        </div>
-        
-        <div id="classGallery" class="class-gallery">
-            <h2>Class Gallery</h2>
-            <div id="galleryContainer" class="gallery-container">
-                <!-- Class pictures will be dynamically inserted here -->
-            </div>
-        </div>
-        
-        <footer>
-            <p>Staff School FGGC Alumni Association &copy; 2023</p>
-        </footer>
-    </div>
-    
-    <div id="memberModal" class="modal">
-        <div class="modal-content">
-            <button id="modalClose" class="modal-close">&times;</button>
-            <div class="modal-header">
-                <div id="modalPhotoContainer" class="modal-photo-container">
-                    <!-- Photo will be inserted here -->
-                </div>
-                <div class="modal-header-text">
-                    <h2 id="modalName">Member Name</h2>
-                    <div id="modalCareer" class="career">Career/Profession</div>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="info-section">
-                    <h3>Basic Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-venus-mars"></i>
-                            <div>
-                                <strong>Gender:</strong> <span id="modalSex">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-book"></i>
-                            <div>
-                                <strong>Favorite Subject:</strong> <span id="modalSubject">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-heart"></i>
-                            <div>
-                                <strong>Hobby:</strong> <span id="modalHobby">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <strong>Phone:</strong> <span id="modalPhone">Not available</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="info-section">
-                    <h3>Career & Bio</h3>
-                    <p><strong>Career:</strong> <span id="modalCareerText">Not available</span></p>
-                    <p><strong>Bio:</strong> <span id="modalBio">Not available</span></p>
-                </div>
-                
-                <div class="info-section">
-                    <h3>Favorite Memory</h3>
-                    <p id="modalMemory">Not available</p>
-                </div>
-                
-                <div class="info-section">
-                    <h3>Class History</h3>
-                    <div id="modalClassHistory" class="class-badges">
-                        <!-- Class badges will be inserted here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="backToTop" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const yearbook = document.getElementById('yearbook');
-            const classFilter = document.getElementById('classFilter');
-            const sexFilter = document.getElementById('sexFilter');
-            const searchInput = document.getElementById('searchInput');
-            const memberModal = document.getElementById('memberModal');
-            const modalClose = document.getElementById('modalClose');
-            const classGallery = document.getElementById('classGallery');
-            const galleryContainer = document.getElementById('galleryContainer');
-            const loadingSection = document.getElementById('loadingSection');
-            const modalPhotoContainer = document.getElementById('modalPhotoContainer');
-            const backToTop = document.getElementById('backToTop');
-            
-            // Modal elements
-            const modalName = document.getElementById('modalName');
-            const modalCareer = document.getElementById('modalCareer');
-            const modalSex = document.getElementById('modalSex');
-            const modalSubject = document.getElementById('modalSubject');
-            const modalHobby = document.getElementById('modalHobby');
-            const modalMemory = document.getElementById('modalMemory');
-            const modalPhone = document.getElementById('modalPhone');
-            const modalCareerText = document.getElementById('modalCareerText');
-            const modalBio = document.getElementById('modalBio');
-            const modalClassHistory = document.getElementById('modalClassHistory');
+            // ... (your existing variable declarations) ...
+            const debugSection = document.getElementById('debugSection');
+            const debugContent = document.getElementById('debugContent');
             
             let membersData = [];
             let classPictures = {};
@@ -578,19 +51,29 @@
             function loadCSVFromFile() {
                 const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
                 
+                // Show debug info
+                debugSection.style.display = 'block';
+                debugContent.innerHTML = `<p>Loading CSV file: <span class="url-display">${csvFile}</span></p>`;
+                
                 fetch(csvFile)
                     .then(response => {
+                        debugContent.innerHTML += `<p>HTTP Status: ${response.status} ${response.statusText}</p>`;
+                        
                         if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
+                            throw new Error(`Failed to load CSV file: ${response.status} ${response.statusText}`);
                         }
                         return response.text();
                     })
                     .then(data => {
+                        debugContent.innerHTML += `<p>CSV loaded successfully. Size: ${data.length} characters</p>`;
+                        debugContent.innerHTML += `<p>First 200 characters: <span class="url-display">${data.substring(0, 200)}...</span></p>`;
                         processCSV(data);
-                        // Hide loading section after data is loaded
                         loadingSection.style.display = 'none';
                     })
                     .catch(error => {
+                        console.error('Error loading CSV:', error);
+                        debugContent.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+                        
                         yearbook.innerHTML = `
                             <div class="no-data">
                                 <i class="fas fa-exclamation-circle"></i>
@@ -599,12 +82,11 @@
                                 <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
                             </div>
                         `;
-                        // Hide loading section on error too
                         loadingSection.style.display = 'none';
                     });
             }
             
-            // Process CSV content
+            // Enhanced CSV processing with better photo URL handling
             function processCSV(data) {
                 const lines = data.split('\n');
                 membersData = [];
@@ -613,152 +95,72 @@
                 // Extract headers
                 const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
                 console.log('CSV Headers:', headers);
+                debugContent.innerHTML += `<p>CSV Headers: <strong>${headers.join(', ')}</strong></p>`;
+                
+                // Find column indices
+                const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
+                const sexIndex = headers.findIndex(h => h.toLowerCase().includes('sex'));
+                const photoIndex = headers.findIndex(h => 
+                    h.toLowerCase().includes('photo') || 
+                    h.toLowerCase().includes('picture') ||
+                    h.toLowerCase().includes('image') ||
+                    h.toLowerCase().includes('url')
+                );
+                
+                debugContent.innerHTML += `<p>Photo column index: ${photoIndex} (header: "${headers[photoIndex]}")</p>`;
+                
+                let processedCount = 0;
+                let photoCount = 0;
                 
                 for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim() === '') continue;
                     
-                    // Parse the line with proper CSV handling
                     const parts = parseCSVLine(lines[i]);
-                    console.log('Row data:', parts);
                     
                     if (parts.length >= headers.length) {
-                        // Find the correct column indices based on header names
-                        const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
-                        const sexIndex = headers.findIndex(h => h.toLowerCase().includes('sex'));
-                        const photoIndex = headers.findIndex(h => h.toLowerCase().includes('photo') || h.toLowerCase().includes('picture'));
-                        const subjectIndex = headers.findIndex(h => h.toLowerCase().includes('subject') || h.toLowerCase().includes('favourite'));
-                        const hobbyIndex = headers.findIndex(h => h.toLowerCase().includes('hobby'));
-                        const memoryIndex = headers.findIndex(h => h.toLowerCase().includes('memory'));
-                        const phoneIndex = headers.findIndex(h => h.toLowerCase().includes('phone'));
-                        const careerIndex = headers.findIndex(h => h.toLowerCase().includes('career') || h.toLowerCase().includes('job'));
-                        const bioIndex = headers.findIndex(h => h.toLowerCase().includes('bio'));
-                        
-                        // Clean and extract photo URL - handle quoted URLs properly
+                        // Enhanced photo URL extraction
                         let photoUrl = '';
                         if (photoIndex !== -1 && parts[photoIndex]) {
                             photoUrl = parts[photoIndex].trim();
                             // Remove surrounding quotes but keep the URL intact
                             photoUrl = photoUrl.replace(/^"(.*)"$/, '$1');
-                            console.log('Original photo URL:', parts[photoIndex], 'Cleaned URL:', photoUrl);
+                            
+                            // Clean up common URL issues
+                            photoUrl = photoUrl
+                                .replace(/^https?:\/\//, '') // Remove http:// if duplicated
+                                .replace(/^\/\//, '') // Remove leading //
+                                .trim();
+                            
+                            // Add protocol if missing
+                            if (photoUrl && !photoUrl.startsWith('http')) {
+                                photoUrl = 'https://' + photoUrl;
+                            }
+                            
+                            // Validate URL format
+                            if (photoUrl && photoUrl !== 'N/A' && photoUrl !== '') {
+                                photoCount++;
+                                debugContent.innerHTML += `<p>Photo URL found for ${parts[nameIndex]}: <span class="url-display">${photoUrl}</span></p>`;
+                            }
                         }
                         
                         const member = {
-                            name: parts[nameIndex] ? parts[nameIndex].trim().replace(/"/g, '') : '',
-                            sex: parts[sexIndex] ? parts[sexIndex].trim().replace(/"/g, '') : '',
+                            name: parts[nameIndex] ? parts[nameIndex].trim().replace(/"/g, '') : 'Unknown',
+                            sex: parts[sexIndex] ? parts[sexIndex].trim().replace(/"/g, '') : 'Unknown',
                             photo: photoUrl,
-                            favoriteSubject: parts[subjectIndex] ? parts[subjectIndex].trim().replace(/"/g, '') : '',
-                            hobby: parts[hobbyIndex] ? parts[hobbyIndex].trim().replace(/"/g, '') : '',
-                            memory: parts[memoryIndex] ? parts[memoryIndex].trim().replace(/"/g, '') : '',
-                            phone: parts[phoneIndex] ? parts[phoneIndex].trim().replace(/"/g, '') : '',
-                            career: parts[careerIndex] ? parts[careerIndex].trim().replace(/"/g, '') : '',
-                            bio: parts[bioIndex] ? parts[bioIndex].trim().replace(/"/g, '') : '',
-                            classHistory: []
+                            // ... (rest of your member properties)
                         };
                         
-                        // Process class history from class columns
-                        const classColumns = [
-                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
-                            'Primary 1', 'Primary 2', 'Primary 3', 
-                            'Primary 4', 'Primary 5'
-                        ];
-                        
-                        classColumns.forEach((className, index) => {
-                            const classIndex = headers.findIndex(h => h === className);
-                            if (classIndex !== -1 && parts[classIndex]) {
-                                const classArm = parts[classIndex].trim().replace(/"/g, '');
-                                if (classArm && classArm !== 'N/A' && classArm !== '') {
-                                    const formattedClass = `${className.replace('?', '')}${classArm}`;
-                                    member.classHistory.push(formattedClass);
-                                    
-                                    // Add to classPictures for gallery
-                                    if (!classPictures[formattedClass]) {
-                                        classPictures[formattedClass] = "";
-                                    }
-                                }
-                            }
-                        });
-                        
                         membersData.push(member);
+                        processedCount++;
                     }
                 }
                 
-                console.log('Processed members with photos:', membersData.map(m => ({ name: m.name, photo: m.photo })));
+                debugContent.innerHTML += `<p>Processed ${processedCount} members, ${photoCount} with photos</p>`;
+                console.log('Processed members:', membersData);
                 processMembersData();
             }
             
-            // Parse CSV line considering commas within fields
-            function parseCSVLine(line) {
-                const result = [];
-                let inQuotes = false;
-                let currentField = '';
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                        currentField += char;
-                    } else if (char === ',' && !inQuotes) {
-                        result.push(currentField);
-                        currentField = '';
-                    } else {
-                        currentField += char;
-                    }
-                }
-                
-                // Push the last field
-                result.push(currentField);
-                return result;
-            }
-            
-            // Process members data for display
-            function processMembersData() {
-                renderYearbook(membersData);
-                updateClassGallery();
-                
-                // Add event listeners to filters
-                classFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                sexFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                searchInput.addEventListener('input', function() {
-                    filterMembers();
-                });
-            }
-            
-            // Filter members based on selected criteria
-            function filterMembers() {
-                const classValue = classFilter.value;
-                const sexValue = sexFilter.value;
-                const searchValue = searchInput.value.toLowerCase();
-                
-                let filteredData = membersData;
-                
-                if (classValue !== 'all') {
-                    filteredData = filteredData.filter(member => 
-                        member.classHistory.includes(classValue)
-                    );
-                }
-                
-                if (sexValue !== 'all') {
-                    filteredData = filteredData.filter(member => member.sex === sexValue);
-                }
-                
-                if (searchValue) {
-                    filteredData = filteredData.filter(member => 
-                        member.name.toLowerCase().includes(searchValue)
-                    );
-                }
-                
-                renderYearbook(filteredData);
-                updateClassGallery();
-            }
-            
-            // Render yearbook based on filtered data
+            // Enhanced image loading with better error handling
             function renderYearbook(data) {
                 yearbook.innerHTML = '';
                 
@@ -773,14 +175,25 @@
                     return;
                 }
                 
-                data.forEach(member => {
+                data.forEach((member, index) => {
                     const card = document.createElement('div');
                     card.className = `member-card ${member.sex.toLowerCase()}`;
                     
-                    // Use photo if available, otherwise use placeholder
-                    const photoContent = member.photo && member.photo !== 'N/A' && member.photo !== '' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="handleImageError(this);" />` : 
-                        `<i class="fas fa-user fa-3x"></i>`;
+                    // Enhanced photo handling with multiple fallbacks
+                    let photoContent = '';
+                    if (member.photo && member.photo !== 'N/A' && member.photo !== '') {
+                        photoContent = `
+                            <img src="${member.photo}" 
+                                 alt="${member.name}" 
+                                 class="member-photo" 
+                                 loading="lazy"
+                                 onerror="handleImageError(this, '${member.name}');" 
+                                 onload="handleImageLoad(this, '${member.name}');" />
+                            <div class="photo-loading">Loading...</div>
+                        `;
+                    } else {
+                        photoContent = `<i class="fas fa-user fa-3x"></i>`;
+                    }
                     
                     card.innerHTML = `
                         <div class="card-header">
@@ -794,11 +207,12 @@
                             <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
+                        </div>
+                        <div class="debug-info">
+                            Photo: ${member.photo ? `<span class="url-display">${member.photo}</span>` : 'Not available'}
                         </div>
                     `;
                     
-                    // Add click event to open modal
                     card.addEventListener('click', function() {
                         openMemberModal(member);
                     });
@@ -807,128 +221,91 @@
                 });
             }
             
-            // Handle image loading errors
-            function handleImageError(img) {
-                console.log('Image failed to load:', img.src);
-                img.style.display = 'none';
+            // Enhanced image error handling
+            function handleImageError(img, memberName) {
+                console.log(`Image failed to load for ${memberName}:`, img.src);
+                debugContent.innerHTML += `<p style="color: orange;">Image failed to load for ${memberName}: <span class="url-display">${img.src}</span></p>`;
+                
                 const container = img.parentNode;
+                const loadingIndicator = container.querySelector('.photo-loading');
+                if (loadingIndicator) {
+                    loadingIndicator.textContent = 'Failed to load';
+                    loadingIndicator.style.color = 'red';
+                }
+                
+                // Show placeholder after a delay
+                setTimeout(() => {
+                    img.style.display = 'none';
+                    const placeholder = document.createElement('i');
+                    placeholder.className = 'fas fa-user fa-3x';
+                    container.appendChild(placeholder);
+                }, 1000);
+            }
+            
+            function handleImageLoad(img, memberName) {
+                console.log(`Image loaded successfully for ${memberName}`);
+                const container = img.parentNode;
+                const loadingIndicator = container.querySelector('.photo-loading');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+            }
+            
+            // ... (rest of your existing functions) ...
+            
+            // Test function to check image URLs
+            function testImageUrls() {
+                debugContent.innerHTML += '<h4>Testing Image URLs:</h4>';
+                membersData.forEach((member, index) => {
+                    if (member.photo && member.photo !== 'N/A' && member.photo !== '') {
+                        const testImg = new Image();
+                        testImg.onload = function() {
+                            debugContent.innerHTML += `<p style="color: green;">✓ ${member.name}: URL works</p>`;
+                        };
+                        testImg.onerror = function() {
+                            debugContent.innerHTML += `<p style="color: red;">✗ ${member.name}: URL broken - <span class="url-display">${member.photo}</span></p>`;
+                        };
+                        testImg.src = member.photo;
+                    }
+                });
+            }
+            
+            // Load CSV data
+            loadCSVFromFile();
+            
+            // Add test button for debugging
+            const testButton = document.createElement('button');
+            testButton.textContent = 'Test Image URLs';
+            testButton.style.margin = '10px';
+            testButton.addEventListener('click', testImageUrls);
+            debugSection.appendChild(testButton);
+        });
+        
+        // Make functions global for inline event handlers
+        window.handleImageError = function(img, memberName) {
+            console.log(`Image failed to load for ${memberName}:`, img.src);
+            const container = img.parentNode;
+            const loadingIndicator = container.querySelector('.photo-loading');
+            if (loadingIndicator) {
+                loadingIndicator.textContent = 'Failed to load';
+                loadingIndicator.style.color = 'red';
+            }
+            
+            setTimeout(() => {
+                img.style.display = 'none';
                 const placeholder = document.createElement('i');
                 placeholder.className = 'fas fa-user fa-3x';
                 container.appendChild(placeholder);
+            }, 1000);
+        };
+        
+        window.handleImageLoad = function(img, memberName) {
+            const container = img.parentNode;
+            const loadingIndicator = container.querySelector('.photo-loading');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
             }
-            
-            // Update class gallery based on selected class
-            function updateClassGallery() {
-                const classValue = classFilter.value;
-                
-                // Hide gallery if "All Classes" is selected
-                if (classValue === 'all') {
-                    classGallery.classList.remove('visible');
-                    return;
-                }
-                
-                // Show gallery for specific class
-                classGallery.classList.add('visible');
-                galleryContainer.innerHTML = '';
-                
-                // In a real implementation, you would have actual class picture URLs
-                const placeholderImage = `https://via.placeholder.com/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
-                
-                const classPicture = document.createElement('div');
-                classPicture.className = 'class-picture';
-                classPicture.innerHTML = `
-                    <img src="${placeholderImage}" alt="${classValue} Class Photo">
-                    <h3>${classValue} Class Photo</h3>
-                `;
-                
-                galleryContainer.appendChild(classPicture);
-            }
-            
-            // Open modal with member details
-            function openMemberModal(member) {
-                modalName.textContent = member.name;
-                modalSex.textContent = member.sex || 'Not available';
-                modalSubject.textContent = member.favoriteSubject || 'Not available';
-                modalHobby.textContent = member.hobby || 'Not available';
-                modalMemory.textContent = member.memory || 'Not available';
-                modalPhone.textContent = member.phone || 'Not available';
-                modalCareerText.textContent = member.career || 'Not available';
-                modalBio.textContent = member.bio || 'Not available';
-                
-                // Set career in the header
-                modalCareer.textContent = member.career || 'Not available';
-                
-                // Set photo or icon
-                modalPhotoContainer.innerHTML = '';
-                if (member.photo && member.photo !== 'N/A' && member.photo !== '') {
-                    const img = document.createElement('img');
-                    img.src = member.photo;
-                    img.alt = member.name;
-                    img.className = 'modal-photo';
-                    img.onerror = function() {
-                        console.log('Modal image failed to load:', this.src);
-                        this.style.display = 'none';
-                        const placeholder = document.createElement('i');
-                        placeholder.className = 'fas fa-user modal-photo-placeholder';
-                        modalPhotoContainer.appendChild(placeholder);
-                    };
-                    modalPhotoContainer.appendChild(img);
-                } else {
-                    const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal-photo-placeholder';
-                    modalPhotoContainer.appendChild(placeholder);
-                }
-                
-                // Render class history
-                modalClassHistory.innerHTML = '';
-                if (member.classHistory && member.classHistory.length > 0) {
-                    member.classHistory.forEach(className => {
-                        if (className) {
-                            const badge = document.createElement('span');
-                            badge.className = 'class-badge';
-                            badge.textContent = className;
-                            modalClassHistory.appendChild(badge);
-                        }
-                    });
-                } else {
-                    modalClassHistory.innerHTML = '<p>Not available</p>';
-                }
-                
-                // Show modal
-                memberModal.style.display = 'block';
-            }
-            
-            // Close modal
-            modalClose.addEventListener('click', function() {
-                memberModal.style.display = 'none';
-            });
-            
-            // Close modal if clicked outside
-            window.addEventListener('click', function(e) {
-                if (e.target === memberModal) {
-                    memberModal.style.display = 'none';
-                }
-            });
-            
-            // Back to top functionality
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTop.classList.add('visible');
-                } else {
-                    backToTop.classList.remove('visible');
-                }
-            });
-            
-            backToTop.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // Load CSV data on page load
-            loadCSVFromFile();
-        });
+        };
     </script>
 </body>
 </html>
