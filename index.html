@@ -1,386 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff School FGGC Alumni Yearbook</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* ... (keep all the existing CSS styles exactly as they were) ... */
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff School FGGC Alumni Yearbook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .filters select, .filters input {
+      padding: 8px;
+    }
+    #yearbook {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .member-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .member-card:hover {
+      transform: scale(1.03);
+    }
+    .card-header {
+      text-align: center;
+      padding: 15px;
+    }
+    .photo-container {
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .member-photo {
+      width: 100%;
+      height: auto;
+    }
+    .career {
+      font-size: 0.9em;
+      color: #666;
+    }
+    .card-body {
+      padding: 10px 15px 20px;
+      font-size: 0.9em;
+      color: #444;
+    }
+    .no-data {
+      text-align: center;
+      color: #666;
+      margin-top: 50px;
+    }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      overflow: auto;
+    }
+    .modal-content {
+      background: #fff;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px; right: 15px;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: #333;
+    }
+    .modal-photo {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 10px auto;
+    }
+    .class-badge {
+      display: inline-block;
+      background: #4b6cb7;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin: 3px;
+      font-size: 0.8em;
+    }
+    #classGallery {
+      margin-top: 30px;
+      display: none;
+    }
+    #classGallery.visible {
+      display: block;
+    }
+    .class-picture img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- ... (keep all the existing HTML structure exactly as it was) ... -->
+  <div class="container">
+    <h1>Staff School FGGC Alumni Yearbook</h1>
+    <div class="filters">
+      <select id="classFilter">
+        <option value="all">All Classes</option>
+        <option value="Pre-NurseryA">Pre-Nursery A</option>
+        <option value="Nursery 1A">Nursery 1A</option>
+        <option value="Nursery 2A">Nursery 2A</option>
+        <option value="Primary 1A">Primary 1A</option>
+        <option value="Primary 2A">Primary 2A</option>
+        <option value="Primary 3B">Primary 3B</option>
+        <option value="Primary 4C">Primary 4C</option>
+        <option value="Primary 5C">Primary 5C</option>
+      </select>
+      <select id="sexFilter">
+        <option value="all">All Sexes</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search by name...">
     </div>
+    <div id="loadingSection">Loading data...</div>
+    <div id="yearbook"></div>
+    <div id="classGallery">
+      <h2>Class Gallery</h2>
+      <div id="galleryContainer"></div>
+    </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const yearbook = document.getElementById('yearbook');
-            const classFilter = document.getElementById('classFilter');
-            const sexFilter = document.getElementById('sexFilter');
-            const searchInput = document.getElementById('searchInput');
-            const memberModal = document.getElementById('memberModal');
-            const modalClose = document.getElementById('modalClose');
-            const classGallery = document.getElementById('classGallery');
-            const galleryContainer = document.getElementById('galleryContainer');
-            const loadingSection = document.getElementById('loadingSection');
-            const modalPhotoContainer = document.getElementById('modalPhotoContainer');
-            
-            // Modal elements
-            const modalName = document.getElementById('modalName');
-            const modalCareer = document.getElementById('modalCareer');
-            const modalSex = document.getElementById('modalSex');
-            const modalSubject = document.getElementById('modalSubject');
-            const modalHobby = document.getElementById('modalHobby');
-            const modalMemory = document.getElementById('modalMemory');
-            const modalPhone = document.getElementById('modalPhone');
-            const modalCareerText = document.getElementById('modalCareerText');
-            const modalBio = document.getElementById('modalBio');
-            const modalClassHistory = document.getElementById('modalClassHistory');
-            
-            let membersData = [];
-            let classPictures = {};
-            
-            // Load CSV from file
-            function loadCSVFromFile() {
-                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
-                
-                fetch(csvFile)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
-                        }
-                        return response.text();
-                    })
-                    .then(data => {
-                        processCSV(data);
-                        // Hide loading section after data is loaded
-                        loadingSection.style.display = 'none';
-                    })
-                    .catch(error => {
-                        yearbook.innerHTML = `
-                            <div class="no-data">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <h3>Error loading data</h3>
-                                <p>${error.message}</p>
-                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
-                            </div>
-                        `;
-                        // Hide loading section on error too
-                        loadingSection.style.display = 'none';
-                    });
+  <!-- Modal -->
+  <div id="memberModal" class="modal">
+    <div class="modal-content">
+      <span id="modalClose" class="modal-close">&times;</span>
+      <div id="modalPhotoContainer"></div>
+      <h2 id="modalName"></h2>
+      <h4 id="modalCareer"></h4>
+      <p><strong>Sex:</strong> <span id="modalSex"></span></p>
+      <p><strong>Favourite Subject:</strong> <span id="modalSubject"></span></p>
+      <p><strong>Hobby:</strong> <span id="modalHobby"></span></p>
+      <p><strong>Memory:</strong> <span id="modalMemory"></span></p>
+      <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+      <p><strong>Career:</strong> <span id="modalCareerText"></span></p>
+      <p><strong>Bio:</strong> <span id="modalBio"></span></p>
+      <div><strong>Class History:</strong> <div id="modalClassHistory"></div></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const yearbook = document.getElementById('yearbook');
+      const classFilter = document.getElementById('classFilter');
+      const sexFilter = document.getElementById('sexFilter');
+      const searchInput = document.getElementById('searchInput');
+      const memberModal = document.getElementById('memberModal');
+      const modalClose = document.getElementById('modalClose');
+      const classGallery = document.getElementById('classGallery');
+      const galleryContainer = document.getElementById('galleryContainer');
+      const loadingSection = document.getElementById('loadingSection');
+      const modalPhotoContainer = document.getElementById('modalPhotoContainer');
+      const modalName = document.getElementById('modalName');
+      const modalCareer = document.getElementById('modalCareer');
+      const modalSex = document.getElementById('modalSex');
+      const modalSubject = document.getElementById('modalSubject');
+      const modalHobby = document.getElementById('modalHobby');
+      const modalMemory = document.getElementById('modalMemory');
+      const modalPhone = document.getElementById('modalPhone');
+      const modalCareerText = document.getElementById('modalCareerText');
+      const modalBio = document.getElementById('modalBio');
+      const modalClassHistory = document.getElementById('modalClassHistory');
+
+      let membersData = [];
+
+      // Load CSV
+      function loadCSVFromFile() {
+        const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
+        fetch(csvFile)
+          .then(res => res.text())
+          .then(data => {
+            processCSV(data);
+            loadingSection.style.display = 'none';
+          })
+          .catch(err => {
+            yearbook.innerHTML = `<div class="no-data"><h3>Error loading data</h3><p>${err.message}</p></div>`;
+            loadingSection.style.display = 'none';
+          });
+      }
+
+      // Parse CSV
+      function parseCSVLine(line) {
+        const result = [];
+        let inQuotes = false, current = '';
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current);
+        return result;
+      }
+
+      // Process CSV content
+      function processCSV(data) {
+        const lines = data.split('\n');
+        const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+          const parts = parseCSVLine(lines[i]);
+
+          const getValue = (headerName) => {
+            const index = headers.findIndex(h => h.toLowerCase().includes(headerName));
+            return index !== -1 && parts[index] ? parts[index].trim().replace(/"/g, '') : '';
+          };
+
+          let photoUrl = getValue('photo') || getValue('upload');
+          if (photoUrl.includes("drive.google.com") && photoUrl.includes("id=")) {
+            const match = photoUrl.match(/id=([^&]+)/);
+            if (match) {
+              photoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
             }
-            
-            // Process CSV content
-            function processCSV(data) {
-                const lines = data.split('\n');
-                membersData = [];
-                classPictures = {};
-                
-                // Extract headers
-                const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
-                console.log('CSV Headers:', headers);
-                
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].trim() === '') continue;
-                    
-                    // Parse the line with proper CSV handling
-                    const parts = parseCSVLine(lines[i]);
-                    console.log('Row data:', parts);
-                    
-                    if (parts.length >= headers.length) {
-                        // Find the correct column indices based on header names
-                        const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
-                        const sexIndex = headers.findIndex(h => h.toLowerCase().includes('sex'));
-                        const photoIndex = headers.findIndex(h => h.toLowerCase().includes('photo') || h.toLowerCase().includes('picture'));
-                        const subjectIndex = headers.findIndex(h => h.toLowerCase().includes('subject') || h.toLowerCase().includes('favourite'));
-                        const hobbyIndex = headers.findIndex(h => h.toLowerCase().includes('hobby'));
-                        const memoryIndex = headers.findIndex(h => h.toLowerCase().includes('memory'));
-                        const phoneIndex = headers.findIndex(h => h.toLowerCase().includes('phone'));
-                        const careerIndex = headers.findIndex(h => h.toLowerCase().includes('career') || h.toLowerCase().includes('job'));
-                        const bioIndex = headers.findIndex(h => h.toLowerCase().includes('bio'));
-                        
-                        // Clean and extract photo URL - handle quoted URLs properly
-                        let photoUrl = '';
-                        if (photoIndex !== -1 && parts[photoIndex]) {
-                            photoUrl = parts[photoIndex].trim();
-                            // Remove surrounding quotes but keep the URL intact
-                            photoUrl = photoUrl.replace(/^"(.*)"$/, '$1');
-                            console.log('Original photo URL:', parts[photoIndex], 'Cleaned URL:', photoUrl);
-                        }
-                        
-                        const member = {
-                            name: parts[nameIndex] ? parts[nameIndex].trim().replace(/"/g, '') : '',
-                            sex: parts[sexIndex] ? parts[sexIndex].trim().replace(/"/g, '') : '',
-                            photo: photoUrl,
-                            favoriteSubject: parts[subjectIndex] ? parts[subjectIndex].trim().replace(/"/g, '') : '',
-                            hobby: parts[hobbyIndex] ? parts[hobbyIndex].trim().replace(/"/g, '') : '',
-                            memory: parts[memoryIndex] ? parts[memoryIndex].trim().replace(/"/g, '') : '',
-                            phone: parts[phoneIndex] ? parts[phoneIndex].trim().replace(/"/g, '') : '',
-                            career: parts[careerIndex] ? parts[careerIndex].trim().replace(/"/g, '') : '',
-                            bio: parts[bioIndex] ? parts[bioIndex].trim().replace(/"/g, '') : '',
-                            classHistory: []
-                        };
-                        
-                        // Process class history from class columns
-                        const classColumns = [
-                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
-                            'Primary 1', 'Primary 2', 'Primary 3', 
-                            'Primary 4', 'Primary 5'
-                        ];
-                        
-                        classColumns.forEach((className, index) => {
-                            const classIndex = headers.findIndex(h => h === className);
-                            if (classIndex !== -1 && parts[classIndex]) {
-                                const classArm = parts[classIndex].trim().replace(/"/g, '');
-                                if (classArm && classArm !== 'N/A' && classArm !== '') {
-                                    const formattedClass = `${className.replace('?', '')}${classArm}`;
-                                    member.classHistory.push(formattedClass);
-                                    
-                                    // Add to classPictures for gallery
-                                    if (!classPictures[formattedClass]) {
-                                        classPictures[formattedClass] = "";
-                                    }
-                                }
-                            }
-                        });
-                        
-                        membersData.push(member);
-                    }
-                }
-                
-                console.log('Processed members with photos:', membersData.map(m => ({ name: m.name, photo: m.photo })));
-                processMembersData();
-            }
-            
-            // Parse CSV line considering commas within fields
-            function parseCSVLine(line) {
-                const result = [];
-                let inQuotes = false;
-                let currentField = '';
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                        currentField += char;
-                    } else if (char === ',' && !inQuotes) {
-                        result.push(currentField);
-                        currentField = '';
-                    } else {
-                        currentField += char;
-                    }
-                }
-                
-                // Push the last field
-                result.push(currentField);
-                return result;
-            }
-            
-            // Process members data for display
-            function processMembersData() {
-                renderYearbook(membersData);
-                updateClassGallery();
-                
-                // Add event listeners to filters
-                classFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                sexFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                searchInput.addEventListener('input', function() {
-                    filterMembers();
-                });
-            }
-            
-            // Filter members based on selected criteria
-            function filterMembers() {
-                const classValue = classFilter.value;
-                const sexValue = sexFilter.value;
-                const searchValue = searchInput.value.toLowerCase();
-                
-                let filteredData = membersData;
-                
-                if (classValue !== 'all') {
-                    filteredData = filteredData.filter(member => 
-                        member.classHistory.includes(classValue)
-                    );
-                }
-                
-                if (sexValue !== 'all') {
-                    filteredData = filteredData.filter(member => member.sex === sexValue);
-                }
-                
-                if (searchValue) {
-                    filteredData = filteredData.filter(member => 
-                        member.name.toLowerCase().includes(searchValue)
-                    );
-                }
-                
-                renderYearbook(filteredData);
-                updateClassGallery();
-            }
-            
-            // Render yearbook based on filtered data
-            function renderYearbook(data) {
-                yearbook.innerHTML = '';
-                
-                if (data.length === 0) {
-                    yearbook.innerHTML = `
-                        <div class="no-data">
-                            <i class="fas fa-search"></i>
-                            <h3>No members found</h3>
-                            <p>Try changing your filter criteria</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                data.forEach(member => {
-                    const card = document.createElement('div');
-                    card.className = `member-card ${member.sex.toLowerCase()}`;
-                    
-                    // Use photo if available, otherwise use placeholder
-                    const photoContent = member.photo && member.photo !== 'N/A' && member.photo !== '' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="handleImageError(this);" />` : 
-                        `<i class="fas fa-user fa-3x"></i>`;
-                    
-                    card.innerHTML = `
-                        <div class="card-header">
-                            <div class="photo-container">
-                                ${photoContent}
-                            </div>
-                            <h3>${member.name}</h3>
-                            <div class="career">${member.career || 'Not available'}</div>
-                        </div>
-                        <div class="card-body">
-                            <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
-                            <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
-                            <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
-                        </div>
-                    `;
-                    
-                    // Add click event to open modal
-                    card.addEventListener('click', function() {
-                        openMemberModal(member);
-                    });
-                    
-                    yearbook.appendChild(card);
-                });
-            }
-            
-            // Handle image loading errors
-            function handleImageError(img) {
-                console.log('Image failed to load:', img.src);
-                img.style.display = 'none';
-                const container = img.parentNode;
-                const placeholder = document.createElement('i');
-                placeholder.className = 'fas fa-user fa-3x';
-                container.appendChild(placeholder);
-            }
-            
-            // Update class gallery based on selected class
-            function updateClassGallery() {
-                const classValue = classFilter.value;
-                
-                // Hide gallery if "All Classes" is selected
-                if (classValue === 'all') {
-                    classGallery.classList.remove('visible');
-                    return;
-                }
-                
-                // Show gallery for specific class
-                classGallery.classList.add('visible');
-                galleryContainer.innerHTML = '';
-                
-                // In a real implementation, you would have actual class picture URLs
-                const placeholderImage = `https://via.placeholder.com/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
-                
-                const classPicture = document.createElement('div');
-                classPicture.className = 'class-picture';
-                classPicture.innerHTML = `
-                    <img src="${placeholderImage}" alt="${classValue} Class Photo">
-                    <h3>${classValue} Class Photo</h3>
-                `;
-                
-                galleryContainer.appendChild(classPicture);
-            }
-            
-            // Open modal with member details
-            function openMemberModal(member) {
-                modalName.textContent = member.name;
-                modalSex.textContent = member.sex || 'Not available';
-                modalSubject.textContent = member.favoriteSubject || 'Not available';
-                modalHobby.textContent = member.hobby || 'Not available';
-                modalMemory.textContent = member.memory || 'Not available';
-                modalPhone.textContent = member.phone || 'Not available';
-                modalCareerText.textContent = member.career || 'Not available';
-                modalBio.textContent = member.bio || 'Not available';
-                
-                // Set career in the header
-                modalCareer.textContent = member.career || 'Not available';
-                
-                // Set photo or icon
-                modalPhotoContainer.innerHTML = '';
-                if (member.photo && member.photo !== 'N/A' && member.photo !== '') {
-                    const img = document.createElement('img');
-                    img.src = member.photo;
-                    img.alt = member.name;
-                    img.className = 'modal-photo';
-                    img.onerror = function() {
-                        console.log('Modal image failed to load:', this.src);
-                        this.style.display = 'none';
-                        const placeholder = document.createElement('i');
-                        placeholder.className = 'fas fa-user modal-photo-placeholder';
-                        modalPhotoContainer.appendChild(placeholder);
-                    };
-                    modalPhotoContainer.appendChild(img);
-                } else {
-                    const placeholder = document.createElement('i');
-                    placeholder.className = 'fas fa-user modal-photo-placeholder';
-                    modalPhotoContainer.appendChild(placeholder);
-                }
-                
-                // Render class history
-                modalClassHistory.innerHTML = '';
-                if (member.classHistory && member.classHistory.length > 0) {
-                    member.classHistory.forEach(className => {
-                        if (className) {
-                            const badge = document.createElement('span');
-                            badge.className = 'class-badge';
-                            badge.textContent = className;
-                            modalClassHistory.appendChild(badge);
-                        }
-                    });
-                } else {
-                    modalClassHistory.innerHTML = '<p>Not available</p>';
-                }
-                
-                // Show modal
-                memberModal.style.display = 'block';
-            }
-            
-            // Close modal
-            modalClose.addEventListener('click', function() {
-                memberModal.style.display = 'none';
+          }
+
+          const member = {
+            name: getValue('name'),
+            sex: getValue('sex'),
+            photo: photoUrl,
+            favoriteSubject: getValue('subject'),
+            hobby: getValue('hobby'),
+            memory: getValue('memory'),
+            phone: getValue('phone'),
+            career: getValue('career') || getValue('job'),
+            bio: getValue('bio'),
+            classHistory: []
+          };
+
+          ['Pre-Nursery?', 'Nursery 1', 'Nursery 2', 'Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5']
+            .forEach(c => {
+              const idx = headers.indexOf(c);
+              if (idx !== -1 && parts[idx]) {
+                const arm = parts[idx].trim().replace(/"/g, '');
+                if (arm && arm !== 'N/A') member.classHistory.push(`${c.replace('?', '')}${arm}`);
+              }
             });
-            
-            // Close modal if clicked outside
-            window.addEventListener('click', function(e) {
-                if (e.target === memberModal) {
-                    memberModal.style.display = 'none';
-                }
-            });
-            
-            // Load CSV data on page load
-            loadCSVFromFile();
+
+          membersData.push(member);
+        }
+        renderYearbook(membersData);
+      }
+
+      // Render yearbook
+      function renderYearbook(data) {
+        yearbook.innerHTML = '';
+        if (data.length === 0) {
+          yearbook.innerHTML = `<div class="no-data"><h3>No members found</h3></div>`;
+          return;
+        }
+        data.forEach(member => {
+          const card = document.createElement('div');
+          card.className = 'member-card';
+          const photo = member.photo ? 
+            `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=fas fa-user fa-3x></i>';">` :
+            `<i class="fas fa-user fa-3x"></i>`;
+          card.innerHTML = `
+            <div class="card-header">
+              <div class="photo-container">${photo}</div>
+              <h3>${member.name}</h3>
+              <div class="career">${member.career || 'Not available'}</div>
+            </div>
+            <div class="card-body">
+              <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
+              <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
+              <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
+              <p><i class="fas fa-brain"></i> "${member.memory || 'Not available'}"</p>
+            </div>`;
+          card.addEventListener('click', () => openMemberModal(member));
+          yearbook.appendChild(card);
         });
-    </script>
+      }
+
+      // Open modal
+      function openMemberModal(member) {
+        modalName.textContent = member.name;
+        modalCareer.textContent = member.career || 'Not available';
+        modalSex.textContent = member.sex;
+        modalSubject.textContent = member.favoriteSubject;
+        modalHobby.textContent = member.hobby;
+        modalMemory.textContent = member.memory;
+        modalPhone.textContent = member.phone;
+        modalCareerText.textContent = member.career;
+        modalBio.textContent = member.bio;
+
+        modalPhotoContainer.innerHTML = member.photo ? 
+          `<img src="${member.photo}" class="modal-photo">` : 
+          `<i class="fas fa-user modal-photo-placeholder"></i>`;
+
+        modalClassHistory.innerHTML = '';
+        member.classHistory.forEach(c => {
+          const badge = document.createElement('span');
+          badge.className = 'class-badge';
+          badge.textContent = c;
+          modalClassHistory.appendChild(badge);
+        });
+        if (!member.classHistory.length) modalClassHistory.innerHTML = '<p>Not available</p>';
+
+        memberModal.style.display = 'block';
+      }
+
+      modalClose.addEventListener('click', () => memberModal.style.display = 'none');
+      window.addEventListener('click', e => { if (e.target === memberModal) memberModal.style.display = 'none'; });
+
+      loadCSVFromFile();
+    });
+  </script>
 </body>
 </html>
