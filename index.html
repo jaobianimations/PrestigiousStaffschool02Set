@@ -675,27 +675,27 @@
                 for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim() === '') continue;
                     
-                    // Remove quotes and parse the line
-                    const cleanLine = lines[i].replace(/"/g, '');
-                    const parts = parseCSVLine(cleanLine);
+                    // Parse the line with proper CSV handling
+                    const parts = parseCSVLine(lines[i]);
                     
                     if (parts.length >= headers.length) {
                         const member = {
-                            name: parts[0].trim(),
-                            sex: parts[1].trim(),
-                            photo: parts[2].trim(),
-                            favoriteSubject: parts[3].trim(),
-                            hobby: parts[4].trim(),
-                            memory: parts[5].trim(),
-                            phone: parts[6].trim(),
-                            career: parts[7].trim(),
-                            bio: parts[8].trim(),
+                            name: parts[0] ? parts[0].trim().replace(/"/g, '') : '',
+                            sex: parts[1] ? parts[1].trim().replace(/"/g, '') : '',
+                            // Keep quotation marks for photo URL
+                            photo: parts[2] ? parts[2].trim() : '',
+                            favoriteSubject: parts[3] ? parts[3].trim().replace(/"/g, '') : '',
+                            hobby: parts[4] ? parts[4].trim().replace(/"/g, '') : '',
+                            memory: parts[5] ? parts[5].trim().replace(/"/g, '') : '',
+                            phone: parts[6] ? parts[6].trim().replace(/"/g, '') : '',
+                            career: parts[7] ? parts[7].trim().replace(/"/g, '') : '',
+                            bio: parts[8] ? parts[8].trim().replace(/"/g, '') : '',
                             classHistory: []
                         };
                         
                         // Process class history from remaining columns
                         for (let j = 9; j < parts.length; j++) {
-                            const classArm = parts[j].trim();
+                            const classArm = parts[j] ? parts[j].trim().replace(/"/g, '') : '';
                             if (classArm && classArm !== 'N/A' && classArm !== '') {
                                 // Get class name from header
                                 const className = headers[j] ? headers[j].replace('?', '') : `Class ${j-8}`;
@@ -713,6 +713,7 @@
                     }
                 }
                 
+                console.log('Processed members:', membersData); // Debug log
                 processMembersData();
             }
             
@@ -727,6 +728,7 @@
                     
                     if (char === '"') {
                         inQuotes = !inQuotes;
+                        currentField += char; // Keep the quotation marks
                     } else if (char === ',' && !inQuotes) {
                         result.push(currentField);
                         currentField = '';
@@ -807,8 +809,12 @@
                     card.className = `member-card ${member.sex.toLowerCase()}`;
                     
                     // Use photo if available, otherwise use placeholder
-                    const photoContent = member.photo && member.photo !== 'N/A' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
+                    let photoUrl = member.photo && member.photo !== 'N/A' ? member.photo : '';
+                    // Remove quotation marks from photo URL for display
+                    const displayPhotoUrl = photoUrl.replace(/"/g, '');
+                    
+                    const photoContent = photoUrl && photoUrl !== 'N/A' ? 
+                        `<img src="${displayPhotoUrl}" alt="${member.name}" class="member-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-user fa-3x\'></i>';" />` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
@@ -882,7 +888,9 @@
                 modalPhotoContainer.innerHTML = '';
                 if (member.photo && member.photo !== 'N/A') {
                     const img = document.createElement('img');
-                    img.src = member.photo;
+                    // Remove quotation marks from photo URL for display
+                    const displayPhotoUrl = member.photo.replace(/"/g, '');
+                    img.src = displayPhotoUrl;
                     img.alt = member.name;
                     img.className = 'modal-photo';
                     img.onerror = function() {
