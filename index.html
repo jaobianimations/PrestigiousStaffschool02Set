@@ -671,43 +671,63 @@
                 
                 // Extract headers
                 const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
+                console.log('CSV Headers:', headers); // Debug log
                 
                 for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim() === '') continue;
                     
                     // Parse the line with proper CSV handling
                     const parts = parseCSVLine(lines[i]);
+                    console.log('Row data:', parts); // Debug log
                     
                     if (parts.length >= headers.length) {
+                        // Find the correct column indices based on header names
+                        const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
+                        const sexIndex = headers.findIndex(h => h.toLowerCase().includes('sex'));
+                        const photoIndex = headers.findIndex(h => h.toLowerCase().includes('photo'));
+                        const subjectIndex = headers.findIndex(h => h.toLowerCase().includes('subject') || h.toLowerCase().includes('favourite'));
+                        const hobbyIndex = headers.findIndex(h => h.toLowerCase().includes('hobby'));
+                        const memoryIndex = headers.findIndex(h => h.toLowerCase().includes('memory'));
+                        const phoneIndex = headers.findIndex(h => h.toLowerCase().includes('phone'));
+                        const careerIndex = headers.findIndex(h => h.toLowerCase().includes('career') || h.toLowerCase().includes('job'));
+                        const bioIndex = headers.findIndex(h => h.toLowerCase().includes('bio'));
+                        
                         const member = {
-                            name: parts[0] ? parts[0].trim().replace(/"/g, '') : '',
-                            sex: parts[1] ? parts[1].trim().replace(/"/g, '') : '',
+                            name: parts[nameIndex] ? parts[nameIndex].trim().replace(/"/g, '') : '',
+                            sex: parts[sexIndex] ? parts[sexIndex].trim().replace(/"/g, '') : '',
                             // Keep quotation marks for photo URL
-                            photo: parts[2] ? parts[2].trim() : '',
-                            favoriteSubject: parts[3] ? parts[3].trim().replace(/"/g, '') : '',
-                            hobby: parts[4] ? parts[4].trim().replace(/"/g, '') : '',
-                            memory: parts[5] ? parts[5].trim().replace(/"/g, '') : '',
-                            phone: parts[6] ? parts[6].trim().replace(/"/g, '') : '',
-                            career: parts[7] ? parts[7].trim().replace(/"/g, '') : '',
-                            bio: parts[8] ? parts[8].trim().replace(/"/g, '') : '',
+                            photo: parts[photoIndex] ? parts[photoIndex].trim() : '',
+                            favoriteSubject: parts[subjectIndex] ? parts[subjectIndex].trim().replace(/"/g, '') : '',
+                            hobby: parts[hobbyIndex] ? parts[hobbyIndex].trim().replace(/"/g, '') : '',
+                            memory: parts[memoryIndex] ? parts[memoryIndex].trim().replace(/"/g, '') : '',
+                            phone: parts[phoneIndex] ? parts[phoneIndex].trim().replace(/"/g, '') : '',
+                            career: parts[careerIndex] ? parts[careerIndex].trim().replace(/"/g, '') : '',
+                            bio: parts[bioIndex] ? parts[bioIndex].trim().replace(/"/g, '') : '',
                             classHistory: []
                         };
                         
-                        // Process class history from remaining columns
-                        for (let j = 9; j < parts.length; j++) {
-                            const classArm = parts[j] ? parts[j].trim().replace(/"/g, '') : '';
-                            if (classArm && classArm !== 'N/A' && classArm !== '') {
-                                // Get class name from header
-                                const className = headers[j] ? headers[j].replace('?', '') : `Class ${j-8}`;
-                                const formattedClass = `${className}${classArm}`;
-                                member.classHistory.push(formattedClass);
-                                
-                                // Add to classPictures for gallery
-                                if (!classPictures[formattedClass]) {
-                                    classPictures[formattedClass] = "";
+                        // Process class history from class columns
+                        const classColumns = [
+                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
+                            'Primary 1', 'Primary 2', 'Primary 3', 
+                            'Primary 4', 'Primary 5'
+                        ];
+                        
+                        classColumns.forEach((className, index) => {
+                            const classIndex = headers.findIndex(h => h === className);
+                            if (classIndex !== -1 && parts[classIndex]) {
+                                const classArm = parts[classIndex].trim().replace(/"/g, '');
+                                if (classArm && classArm !== 'N/A' && classArm !== '') {
+                                    const formattedClass = `${className.replace('?', '')}${classArm}`;
+                                    member.classHistory.push(formattedClass);
+                                    
+                                    // Add to classPictures for gallery
+                                    if (!classPictures[formattedClass]) {
+                                        classPictures[formattedClass] = "";
+                                    }
                                 }
                             }
-                        }
+                        });
                         
                         membersData.push(member);
                     }
