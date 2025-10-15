@@ -235,6 +235,7 @@
             padding: 20px;
             display: flex;
             align-items: center;
+            position: relative; /* Needed for close button positioning */
         }
         
         .modal-photo-container {
@@ -546,6 +547,48 @@
     </div>
 
     <script>
+        // Global function to handle image loading errors (needed for onerror in HTML string)
+        function handleImageError(img) {
+            console.log('Image failed to load or is invalid:', img.src);
+            img.style.display = 'none';
+            const container = img.parentNode;
+            
+            // Check if placeholder already exists to prevent duplication
+            if (!container.querySelector('.fa-user')) {
+                const placeholder = document.createElement('i');
+                placeholder.className = 'fas fa-user fa-3x';
+                container.appendChild(placeholder);
+            }
+        }
+        
+        // Helper function to parse CSV lines correctly, handling quoted fields
+        function parseCSVLine(line) {
+            const result = [];
+            let inQuotes = false;
+            let currentField = '';
+            
+            // Clean up the line from potential trailing carriage returns
+            line = line.replace(/[\r\n]+$/, ''); 
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                    // FIX: Do NOT include the outer quotation marks in the field content.
+                } else if (char === ',' && !inQuotes) {
+                    result.push(currentField);
+                    currentField = '';
+                } else {
+                    currentField += char;
+                }
+            }
+            
+            // Push the last field
+            result.push(currentField);
+            return result;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const yearbook = document.getElementById('yearbook');
             const classFilter = document.getElementById('classFilter');
@@ -576,7 +619,8 @@
             
             // Load CSV from file
             function loadCSVFromFile() {
-                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
+                // IMPORTANT: Ensure this filename is correct and the file is present
+                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv'; 
                 
                 fetch(csvFile)
                     .then(response => {
@@ -596,7 +640,7 @@
                                 <i class="fas fa-exclamation-circle"></i>
                                 <h3>Error loading data</h3>
                                 <p>${error.message}</p>
-                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
+                                <p>Please make sure "${csvFile}" is in the same folder as this HTML file.</p>
                             </div>
                         `;
                         // Hide loading section on error too
@@ -612,14 +656,12 @@
                 
                 // Extract headers
                 const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
-                console.log('CSV Headers:', headers);
                 
                 for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim() === '') continue;
                     
                     // Parse the line with proper CSV handling
                     const parts = parseCSVLine(lines[i]);
-                    console.log('Row data:', parts);
                     
                     if (parts.length >= headers.length) {
                         // Find the correct column indices based on header names
@@ -633,13 +675,11 @@
                         const careerIndex = headers.findIndex(h => h.toLowerCase().includes('career') || h.toLowerCase().includes('job'));
                         const bioIndex = headers.findIndex(h => h.toLowerCase().includes('bio'));
                         
-                        // Clean and extract photo URL - handle quoted URLs properly
+                        // Clean and extract photo URL - the corrected parser should have removed outer quotes
                         let photoUrl = '';
                         if (photoIndex !== -1 && parts[photoIndex]) {
                             photoUrl = parts[photoIndex].trim();
-                            // Remove surrounding quotes but keep the URL intact
-                            photoUrl = photoUrl.replace(/^"(.*)"$/, '$1');
-                            console.log('Original photo URL:', parts[photoIndex], 'Cleaned URL:', photoUrl);
+                            // FIX: Removed photoUrl.replace(/^"(.*)"$/, '$1') as the parser now handles quotes correctly.
                         }
                         
                         const member = {
@@ -682,34 +722,9 @@
                     }
                 }
                 
-                console.log('Processed members with photos:', membersData.map(m => ({ name: m.name, photo: m.photo })));
                 processMembersData();
             }
             
-            // Parse CSV line considering commas within fields
-            function parseCSVLine(line) {
-                const result = [];
-                let inQuotes = false;
-                let currentField = '';
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                        currentField += char;
-                    } else if (char === ',' && !inQuotes) {
-                        result.push(currentField);
-                        currentField = '';
-                    } else {
-                        currentField += char;
-                    }
-                }
-                
-                // Push the last field
-                result.push(currentField);
-                return result;
-            }
             
             // Process members data for display
             function processMembersData() {
@@ -717,17 +732,9 @@
                 updateClassGallery();
                 
                 // Add event listeners to filters
-                classFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                sexFilter.addEventListener('change', function() {
-                    filterMembers();
-                });
-                
-                searchInput.addEventListener('input', function() {
-                    filterMembers();
-                });
+                classFilter.addEventListener('change', filterMembers);
+                sexFilter.addEventListener('change', filterMembers);
+                searchInput.addEventListener('input', filterMembers);
             }
             
             // Filter members based on selected criteria
@@ -740,12 +747,12 @@
                 
                 if (classValue !== 'all') {
                     filteredData = filteredData.filter(member => 
-                        member.classHistory.includes(classValue)
+                        member.classHistory.some(history => history.startsWith(classValue.replace(' ', '')))
                     );
                 }
                 
                 if (sexValue !== 'all') {
-                    filteredData = filteredData.filter(member => member.sex === sexValue);
+                    filteredData = filteredData.filter(member => member.sex.toLowerCase() === sexValue.toLowerCase());
                 }
                 
                 if (searchValue) {
@@ -777,7 +784,7 @@
                     const card = document.createElement('div');
                     card.className = `member-card ${member.sex.toLowerCase()}`;
                     
-                    // Use photo if available, otherwise use placeholder
+                    // Use photo if available, otherwise use placeholder, and include the global onerror
                     const photoContent = member.photo && member.photo !== 'N/A' && member.photo !== '' ? 
                         `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="handleImageError(this);" />` : 
                         `<i class="fas fa-user fa-3x"></i>`;
@@ -791,7 +798,7 @@
                             <div class="career">${member.career || 'Not available'}</div>
                         </div>
                         <div class="card-body">
-                            <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
+                            <p><i class="fas ${member.sex.toLowerCase() === 'male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex || 'Not available'}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
                             <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
@@ -807,15 +814,6 @@
                 });
             }
             
-            // Handle image loading errors
-            function handleImageError(img) {
-                console.log('Image failed to load:', img.src);
-                img.style.display = 'none';
-                const container = img.parentNode;
-                const placeholder = document.createElement('i');
-                placeholder.className = 'fas fa-user fa-3x';
-                container.appendChild(placeholder);
-            }
             
             // Update class gallery based on selected class
             function updateClassGallery() {
@@ -831,8 +829,8 @@
                 classGallery.classList.add('visible');
                 galleryContainer.innerHTML = '';
                 
-                // In a real implementation, you would have actual class picture URLs
-                const placeholderImage = `https://via.placeholder.com/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
+                // Use a placeholder image URL
+                const placeholderImage = `https://placehold.co/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
                 
                 const classPicture = document.createElement('div');
                 classPicture.className = 'class-picture';
@@ -865,9 +863,9 @@
                     img.src = member.photo;
                     img.alt = member.name;
                     img.className = 'modal-photo';
+                    // Use the globally defined error handler
                     img.onerror = function() {
-                        console.log('Modal image failed to load:', this.src);
-                        this.style.display = 'none';
+                        handleImageError(this);
                         const placeholder = document.createElement('i');
                         placeholder.className = 'fas fa-user modal-photo-placeholder';
                         modalPhotoContainer.appendChild(placeholder);
