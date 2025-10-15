@@ -17,122 +17,181 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             line-height: 1.6;
+            padding: 20px;
             min-height: 100vh;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
         
         header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 30px 20px;
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
+        header h1 {
             font-size: 2.5rem;
+            margin-bottom: 10px;
         }
         
-        .subtitle {
-            color: #7f8c8d;
+        header p {
             font-size: 1.2rem;
-            margin-bottom: 20px;
+            opacity: 0.9;
         }
         
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .loading-section {
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .loading-content {
             background: white;
-            padding: 20px;
+            border: 2px solid #4b6cb7;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        .loading-content i {
+            font-size: 3rem;
+            color: #4b6cb7;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #eef1f7;
+            flex-wrap: wrap;
         }
         
         .filter-group {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
             min-width: 200px;
         }
         
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #2c3e50;
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #182848;
         }
         
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        select {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
             font-size: 1rem;
+            cursor: pointer;
         }
         
-        .search-box {
-            position: relative;
-        }
-        
-        .search-box i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #7f8c8d;
+        .content-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
         }
         
         .yearbook {
+            flex: 2;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 25px;
+        }
+        
+        .class-gallery {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            display: none;
+        }
+        
+        .class-gallery.visible {
+            display: block;
+        }
+        
+        .class-gallery h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #182848;
+            border-bottom: 2px solid #4b6cb7;
+            padding-bottom: 10px;
+        }
+        
+        .class-picture {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .class-picture img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .class-picture h3 {
+            color: #4b6cb7;
+            font-size: 1.1rem;
         }
         
         .member-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
         
         .member-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .member-card.male {
-            border-left: 5px solid #3498db;
-        }
-        
-        .member-card.female {
-            border-left: 5px solid #e84393;
+            box-shadow: 0 10极速px 25px rgba(0, 0, 0, 0.15);
         }
         
         .card-header {
             padding: 20px;
             text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
             color: white;
+            position: relative;
         }
         
         .photo-container {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             overflow: hidden;
             margin: 0 auto 15px;
-            background: rgba(255, 255, 255, 0.2);
+            border: 4px solid white;
+            background: #c3cfe2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -145,13 +204,16 @@
         }
         
         .card-header h3 {
+            font-size: 1.4rem;
             margin-bottom: 5px;
-            font-size: 1.3rem;
         }
         
-        .career {
-            font-style: italic;
-            opacity: 0.9;
+        .card-header .career {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
         }
         
         .card-body {
@@ -159,51 +221,49 @@
         }
         
         .card-body p {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
         }
         
         .card-body i {
             margin-right: 10px;
+            color: #4b6cb7;
             width: 20px;
-            color: #7f8c8d;
         }
         
-        .class-gallery {
-            margin-top: 40px;
-            display: none;
+        .male .card-header {
+            background: linear-gradient(90deg, #3498db 0%, #2c3e50 100%);
         }
         
-        .class-gallery.visible {
-            display: block;
+        .female .card-header {
+            background: linear-gradient(90deg, #e91e63 0%, #9c27b0 100%);
         }
         
-        .gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        
-        .class-picture {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-        }
-        
-        .class-picture img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        
-        .class-picture h3 {
-            padding: 15px;
+        .no-data {
             text-align: center;
-            color: #2c3e50;
+            padding: 50极速px;
+            grid-column: 1 / -1;
+            color: #666;
+        }
+        
+        .no-data i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            grid-column: 1 / -1;
+            color: #4b6cb7;
+        }
+        
+        .loading i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
         }
         
         /* Modal Styles */
@@ -222,33 +282,60 @@
         .modal-content {
             background: white;
             margin: 50px auto;
-            max-width: 800px;
+            border-radius: 15px;
+            max-width: 900px;
             width: 90%;
-            border-radius: 10px;
-            overflow: hidden;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            animation: modal极速Fade 0.3s;
+            overflow: hidden;
+        }
+        
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
             color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            position: relative; /* Needed for close button positioning */
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right极速: 25px;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1001;
+        }
+        
+        .modal-close:hover {
+            color: #ffd700;
         }
         
         .modal-photo-container {
-            width: 120px;
-            height: 120px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
+            border: 5px solid white;
+            margin: 0 auto 15px;
             overflow: hidden;
-            margin-right: 20px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #c3cfe2;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            position: relative;
         }
         
         .modal-photo {
@@ -258,65 +345,40 @@
         }
         
         .modal-photo-placeholder {
-            font-size: 3rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .modal-header-text h2 {
-            margin-bottom: 5px;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 4rem;
+            color: #7a93bb;
         }
         
         .modal-body {
             padding: 30px;
-        }
-        
-        .info-section {
-            margin-bottom: 25px;
-        }
-        
-        .info-section h3 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-            border-bottom: 2px solid #f1f1f1;
-            padding-bottom: 5px;
-        }
-        
-        .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
         
-        .info-item {
+        .modal-info {
+            margin-bottom: 20px;
+        }
+        
+        .modal-info h4 {
+            color: #4极速b6cb7;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
         }
         
-        .info-item i {
+        .modal-info h4 i {
             margin-right: 10px;
-            margin-top: 3px;
-            color: #7f8c8d;
             width: 20px;
         }
         
-        .class-badges {
+        .modal-info p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .class-history {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -324,95 +386,83 @@
         }
         
         .class-badge {
-            background: #3498db;
-            color: white;
+            background: #eef1f7;
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.9rem;
+            color: #4b6cb7;
+            border: 1px solid #c3cfe2;
         }
         
-        .no-data {
-            text-align: center;
-            padding: 40px;
+        .full-width {
             grid-column: 1 / -1;
-        }
-        
-        .no-data i {
-            font-size: 3rem;
-            color: #7f8c8d;
-            margin-bottom: 15px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            grid-column: 1 / -1;
-        }
-        
-        .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #3498db;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 99;
-        }
-        
-        .back-to-top.visible {
-            opacity: 1;
         }
         
         footer {
             text-align: center;
             padding: 20px;
-            margin-top: 40px;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
+            background: #182848;
+            color: white;
+        }
+        
+        @media (max-width: 1024px) {
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .class-gallery {
+                order: -1;
+            }
+            
+            .gallery-container {
+                display: flex;
+                overflow-x: auto;
+                gap: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .class-picture {
+                min-width: 250px;
+            }
         }
         
         @media (max-width: 768px) {
-            .modal-header {
+            .filters {
                 flex-direction: column;
-                text-align: center;
+                align-items: center;
             }
             
-            .modal-photo-container {
-                margin-right: 0;
-                margin-bottom: 15px;
+            .filter-group {
+                width: 100%;
+                max-width: 300px;
             }
             
-            .info-grid {
+            .yearbook {
                 grid-template-columns: 1fr;
             }
             
-            h1 {
-                font-size: 2rem;
+            .modal-body {
+                grid-template-columns: 1极速fr;
+            }
+            
+            .modal-photo-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .modal-photo-placeholder {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-photo-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .modal-photo-placeholder {
+                font-size: 3rem;
             }
         }
     </style>
@@ -420,187 +470,143 @@
 <body>
     <div class="container">
         <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
             <h1>Staff School FGGC Alumni Yearbook</h1>
-            <p class="subtitle">Celebrating our shared memories and achievements</p>
+            <p>Celebrating our school memories together</p>
         </header>
         
-        <div class="controls">
+        <section class="loading-section" id="loadingSection">
+            <div class="loading-content">
+                <i class="fas fa-spinner"></i>
+                <h3>Loading Alumni Data...</h3>
+                <p>Please wait while we load the yearbook information</p>
+            </div>
+        </section>
+        
+        <div class="filters">
             <div class="filter-group">
                 <label for="classFilter">Filter by Class:</label>
                 <select id="classFilter">
                     <option value="all">All Classes</option>
                     <option value="Pre-Nursery">Pre-Nursery</option>
-                    <option value="Nursery 1">Nursery 1</option>
-                    <option value="Nursery 2">Nursery 2</option>
-                    <option value="Primary 1">Primary 1</option>
-                    <option value="Primary 2">Primary 2</option>
-                    <option value="Primary 3">Primary 3</option>
-                    <option value="Primary 4">Primary 4</option>
-                    <option value="Primary 5">Primary 5</option>
+                    <option value="Nursery 1A">Nursery 1A</option>
+                    <option value="Nursery 1B">Nursery 1B</option>
+                    <option value="Nursery 2A">Nursery 2A</option>
+                    <option value="Nursery 2B">Nursery 2B</option>
+                    <option value="Primary 1A">Primary 1A</option>
+                    <option value="Primary 1B">Primary 1B</option>
+                    <option value="Primary 1C">Primary 1C</option>
+                    <option value="Primary 2A">Primary 2A</option>
+                    <option value="Primary 2B">Primary 2B</option>
+                    <option value="Primary 2C">Primary 2C</option>
+                    <option value="Primary 3A">Primary 3A</option>
+                    <option value="Primary 3B">Primary 3B</option>
+                    <option value="Primary 3C">Primary 3C</option>
+                    <option value="Primary 4A">Primary 4A</option>
+                    <option value="Primary 4B">Primary 4B</option>
+                    <option value="Primary 4C">Primary 4C</option>
+                    <option value="Primary 5A">Primary 5A</option>
+                    <option value="Primary 5B">Primary 5B</option>
+                    <option value="Primary 5C">Primary 5C</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <label for="sexFilter">Filter by Gender:</label>
+                <label for="sexFilter">Filter by Sex:</label>
                 <select id="sexFilter">
-                    <option value="all">All Genders</option>
+                    <option value="all">All</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
             </div>
-            
-            <div class="filter-group search-box">
-                <label for="searchInput">Search by Name:</label>
-                <input type="text" id="searchInput" placeholder="Enter name...">
-                <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="content-container">
+            <div class="yearbook" id="yearbook">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <h3>Loading yearbook data...</h3>
+                    <p>Please wait while we process the CSV file</极速p>
+                </div>
             </div>
-        </div>
-        
-        <section id="loadingSection" class="loading">
-            <div class="loading-spinner"></div>
-            <h3>Loading Alumni Data...</h3>
-            <p>Please wait while we load the yearbook information</p>
-        </section>
-        
-        <div id="yearbook" class="yearbook">
-            <!-- Member cards will be dynamically inserted here -->
-        </div>
-        
-        <div id="classGallery" class="class-gallery">
-            <h2>Class Gallery</h2>
-            <div id="galleryContainer" class="gallery-container">
-                <!-- Class pictures will be dynamically inserted here -->
+            
+            <div class="class极速-gallery" id="classGallery">
+                <h2>Class Group Picture</h2>
+                <div class="gallery-container" id="galleryContainer">
+                    <!-- Class picture will be loaded here -->
+                </div>
             </div>
         </div>
         
         <footer>
-            <p>Staff School FGGC Alumni Association &copy; 2023</p>
+            <p>Created with ❤️ for Staff School FGGC WhatsApp Group</p>
+            <p>© 2023 Primary School Yearbook</p>
         </footer>
     </div>
-    
-    <div id="memberModal" class="modal">
+
+    <!-- Modal for detailed view -->
+    <div class="modal" id="memberModal">
         <div class="modal-content">
-            <button id="modalClose" class="modal-close">&times;</button>
             <div class="modal-header">
-                <div id="modalPhotoContainer" class="modal-photo-container">
-                    <!-- Photo will be inserted here -->
+                <span class="modal-close" id="modalClose">&times;</span>
+                <div class="modal-photo-container" id="modalPhotoContainer">
+                    <i class="fas fa-user modal-photo-placeholder"></i>
                 </div>
-                <div class="modal-header-text">
-                    <h2 id="modalName">Member Name</h2>
-                    <div id="modalCareer" class="career">Career/Profession</div>
-                </div>
+                <h2 id="modalName">Member Name</h2>
+                <div class="career" id="modalCareer">Engineer</div>
             </div>
             <div class="modal-body">
-                <div class="info-section">
-                    <h3>Basic Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-venus-mars"></i>
-                            <div>
-                                <strong>Gender:</strong> <span id="modalSex">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-book"></i>
-                            <div>
-                                <strong>Favorite Subject:</strong> <span id="modalSubject">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-heart"></i>
-                            <div>
-                                <strong>Hobby:</strong> <span id="modalHobby">Not available</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <strong>Phone:</strong> <span id="modalPhone">Not available</span>
-                            </div>
-                        </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-venus-mars"></i> Sex</h4>
+                    <p id="modalSex">Female</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-book"></i> Favorite Subject</h4>
+                    <p id="modalSubject">Mathematics</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-heart"></i> Hobby</h4>
+                    <p id="modalHobby">Dancing</p>
+                </div>
+                <div class="modal-info">
+                    <h4><极速i class="fas fa-phone"></i> Phone Number</h4>
+                    <p id="modalPhone">Not available</p>
+                </div>
+                <div class="modal-info">
+                    <h4><i class="fas fa-briefcase"></i> Current Career</h4>
+                    <p id="modalCareerText">Not available</p>
+                </div>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-graduation-cap"></i> Class History</h4>
+                    <div class="class-history" id="modalClassHistory">
+                        <!-- Class history badges will be added here -->
                     </div>
                 </div>
-                
-                <div class="info-section">
-                    <h3>Career & Bio</h3>
-                    <p><strong>Career:</strong> <span id="modalCareerText">Not available</span></p>
-                    <p><strong>Bio:</strong> <span id="modalBio">Not available</span></p>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-memory"></i> Favorite Memory</h4>
+                    <p id="modalMemory">Winning the math competition</p>
                 </div>
-                
-                <div class="info-section">
-                    <h3>Favorite Memory</h3>
-                    <p id="modalMemory">Not available</p>
-                </div>
-                
-                <div class="info-section">
-                    <h3>Class History</h3>
-                    <div id="modalClassHistory" class="class-badges">
-                        <!-- Class badges will be inserted here -->
-                    </div>
+                <div class="modal-info full-width">
+                    <h4><i class="fas fa-user"></i> Short Bio</h4>
+                    <p id="modalBio">Not available</p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div id="backToTop" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </div>
 
     <script>
-        // Global function to handle image loading errors (needed for onerror in HTML string)
-        function handleImageError(img) {
-            console.log('Image failed to load or is invalid:', img.src);
-            img.style.display = 'none';
-            const container = img.parentNode;
-            
-            // Check if placeholder already exists to prevent duplication
-            if (!container.querySelector('.fa-user')) {
-                const placeholder = document.createElement('i');
-                placeholder.className = 'fas fa-user fa-3x';
-                container.appendChild(placeholder);
-            }
-        }
-        
-        // Helper function to parse CSV lines correctly, handling quoted fields
-        function parseCSVLine(line) {
-            const result = [];
-            let inQuotes = false;
-            let currentField = '';
-            
-            // Clean up the line from potential trailing carriage returns
-            line = line.replace(/[\r\n]+$/, ''); 
-
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                    // FIX: Do NOT include the outer quotation marks in the field content.
-                } else if (char === ',' && !inQuotes) {
-                    result.push(currentField);
-                    currentField = '';
-                } else {
-                    currentField += char;
-                }
-            }
-            
-            // Push the last field
-            result.push(currentField);
-            return result;
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const yearbook = document.getElementById('yearbook');
             const classFilter = document.getElementById('classFilter');
             const sexFilter = document.getElementById('sexFilter');
-            const searchInput = document.getElementById('searchInput');
             const memberModal = document.getElementById('memberModal');
             const modalClose = document.getElementById('modalClose');
             const classGallery = document.getElementById('classGallery');
             const galleryContainer = document.getElementById('galleryContainer');
             const loadingSection = document.getElementById('loadingSection');
             const modalPhotoContainer = document.getElementById('modalPhotoContainer');
-            const backToTop = document.getElementById('backToTop');
             
             // Modal elements
             const modalName = document.getElementById('modalName');
@@ -617,10 +623,16 @@
             let membersData = [];
             let classPictures = {};
             
+            // Define the class columns we expect in the CSV
+            const classColumns = [
+                'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
+                'Primary 1', 'Primary 2', 'Primary 3', 
+                'Primary 4', 'Primary 5'
+            ];
+            
             // Load CSV from file
             function loadCSVFromFile() {
-                // IMPORTANT: Ensure this filename is correct and the file is present
-                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv'; 
+                const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
                 
                 fetch(csvFile)
                     .then(response => {
@@ -640,7 +652,7 @@
                                 <i class="fas fa-exclamation-circle"></i>
                                 <h3>Error loading data</h3>
                                 <p>${error.message}</p>
-                                <p>Please make sure "${csvFile}" is in the same folder as this HTML file.</p>
+                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
                             </div>
                         `;
                         // Hide loading section on error too
@@ -655,58 +667,39 @@
                 classPictures = {};
                 
                 // Extract headers
-                const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
+                const headers = lines[0].split(',').map(header => header.trim());
                 
                 for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim() === '') continue;
                     
-                    // Parse the line with proper CSV handling
-                    const parts = parseCSVLine(lines[i]);
+                    // Using regex to handle commas within quoted fields
+                    const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
+                    const parts = lines[i].split(regex);
                     
-                    if (parts.length >= headers.length) {
-                        // Find the correct column indices based on header names
-                        const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
-                        const sexIndex = headers.findIndex(h => h.toLowerCase().includes('sex'));
-                        const photoIndex = headers.findIndex(h => h.toLowerCase().includes('photo') || h.toLowerCase().includes('picture'));
-                        const subjectIndex = headers.findIndex(h => h.toLowerCase().includes('subject') || h.toLowerCase().includes('favourite'));
-                        const hobbyIndex = headers.findIndex(h => h.toLowerCase().includes('hobby'));
-                        const memoryIndex = headers.findIndex(h => h.toLowerCase().includes('memory'));
-                        const phoneIndex = headers.findIndex(h => h.toLowerCase().includes('phone'));
-                        const careerIndex = headers.findIndex(h => h.toLowerCase().includes('career') || h.toLowerCase().includes('job'));
-                        const bioIndex = headers.findIndex(h => h.toLowerCase().includes('bio'));
-                        
-                        // Clean and extract photo URL - the corrected parser should have removed outer quotes
-                        let photoUrl = '';
-                        if (photoIndex !== -1 && parts[photoIndex]) {
-                            photoUrl = parts[photoIndex].trim();
-                            // FIX: Removed photoUrl.replace(/^"(.*)"$/, '$1') as the parser now handles quotes correctly.
-                        }
-                        
+                    if (parts.length >= 11) { // At least the basic info + one class column
                         const member = {
-                            name: parts[nameIndex] ? parts[nameIndex].trim().replace(/"/g, '') : '',
-                            sex: parts[sexIndex] ? parts[sexIndex].trim().replace(/"/g, '') : '',
-                            photo: photoUrl,
-                            favoriteSubject: parts[subjectIndex] ? parts[subjectIndex].trim().replace(/"/g, '') : '',
-                            hobby: parts[hobbyIndex] ? parts[hobbyIndex].trim().replace(/"/g, '') : '',
-                            memory: parts[memoryIndex] ? parts[memoryIndex].trim().replace(/"/g, '') : '',
-                            phone: parts[phoneIndex] ? parts[phoneIndex].trim().replace(/"/g, '') : '',
-                            career: parts[careerIndex] ? parts[careerIndex].trim().replace(/"/g, '') : '',
-                            bio: parts[bioIndex] ? parts[bioIndex].trim().replace(/"/g, '') : '',
+                            name: parts[1].trim(), // Full name is at index 1
+                            sex: parts[2].trim(), // Sex is at index 2
+                            photo: parts[3].trim(), // Photo is at index 3
+                            favoriteSubject: parts[4].trim(), // Favourite Subject at index 4
+                            hobby: parts[5].trim(), // Hobby at index 5
+                            memory: parts[6].trim(), // Memory at index 6
+                            phone: parts[7].trim(), // Phone Number at index 7
+                            career: parts[8].trim(), // Current job/Career at index 8
+                            bio: parts[9].trim(), // BIO at index 9
                             classHistory: []
                         };
                         
-                        // Process class history from class columns
-                        const classColumns = [
-                            'Pre-Nursery?', 'Nursery 1', 'Nursery 2', 
-                            'Primary 1', 'Primary 2', 'Primary 3', 
-                            'Primary 4', 'Primary 5'
-                        ];
-                        
-                        classColumns.forEach((className, index) => {
-                            const classIndex = headers.findIndex(h => h === className);
-                            if (classIndex !== -1 && parts[classIndex]) {
-                                const classArm = parts[classIndex].trim().replace(/"/g, '');
+                        // Process class history from separate columns
+                        for (let j = 0; j < classColumns.length; j++) {
+                            const className = classColumns[j];
+                            const headerIndex = headers.indexOf(className);
+                            
+                            if (headerIndex !== -1 && headerIndex < parts.length) {
+                                const classArm = parts[headerIndex].trim();
+                                
                                 if (classArm && classArm !== 'N/A' && classArm !== '') {
+                                    // Format the class name with arm (e.g., "Primary 1" + "A" = "Primary 1A")
                                     const formattedClass = `${className.replace('?', '')}${classArm}`;
                                     member.classHistory.push(formattedClass);
                                     
@@ -716,60 +709,36 @@
                                     }
                                 }
                             }
-                        });
+                        }
                         
                         membersData.push(member);
                     }
                 }
                 
-                processMembersData();
-            }
-            
-            
-            // Process members data for display
-            function processMembersData() {
                 renderYearbook(membersData);
                 updateClassGallery();
-                
-                // Add event listeners to filters
-                classFilter.addEventListener('change', filterMembers);
-                sexFilter.addEventListener('change', filterMembers);
-                searchInput.addEventListener('input', filterMembers);
             }
             
-            // Filter members based on selected criteria
-            function filterMembers() {
+            // Render yearbook based on filters
+            function renderYearbook(data) {
                 const classValue = classFilter.value;
                 const sexValue = sexFilter.value;
-                const searchValue = searchInput.value.toLowerCase();
                 
-                let filteredData = membersData;
+                let filteredData = data;
                 
                 if (classValue !== 'all') {
                     filteredData = filteredData.filter(member => 
-                        member.classHistory.some(history => history.startsWith(classValue.replace(' ', '')))
+                        member.classHistory.includes(classValue)
                     );
                 }
                 
                 if (sexValue !== 'all') {
-                    filteredData = filteredData.filter(member => member.sex.toLowerCase() === sexValue.toLowerCase());
+                    filteredData = filteredData.filter(member => member.sex === sexValue);
                 }
                 
-                if (searchValue) {
-                    filteredData = filteredData.filter(member => 
-                        member.name.toLowerCase().includes(searchValue)
-                    );
-                }
-                
-                renderYearbook(filteredData);
-                updateClassGallery();
-            }
-            
-            // Render yearbook based on filtered data
-            function renderYearbook(data) {
                 yearbook.innerHTML = '';
                 
-                if (data.length === 0) {
+                if (filteredData.length === 0) {
                     yearbook.innerHTML = `
                         <div class="no-data">
                             <i class="fas fa-search"></i>
@@ -780,28 +749,29 @@
                     return;
                 }
                 
-                data.forEach(member => {
+                filteredData.forEach(member => {
                     const card = document.createElement('div');
                     card.className = `member-card ${member.sex.toLowerCase()}`;
+                    card.dataset.member = JSON.stringify(member);
                     
-                    // Use photo if available, otherwise use placeholder, and include the global onerror
-                    const photoContent = member.photo && member.photo !== 'N/A' && member.photo !== '' ? 
-                        `<img src="${member.photo}" alt="${member.name}" class="member-photo" onerror="handleImageError(this);" />` : 
+                    // Use Google Drive photo if available, otherwise use placeholder
+                    const photoContent = member.photo && member.photo !== 'N/A' ? 
+                        `<img src="https://drive.google.com/thumbnail?id=${extractGoogleDriveId(m极速ember.photo)}&sz=w500" alt="${member.name}" class="member-photo">` : 
                         `<i class="fas fa-user fa-3x"></i>`;
                     
                     card.innerHTML = `
                         <div class="card-header">
-                            <div class="photo-container">
+                            <div极速 class="photo-container">
                                 ${photoContent}
                             </div>
                             <h3>${member.name}</h3>
                             <div class="career">${member.career || 'Not available'}</div>
                         </div>
                         <div class="card-body">
-                            <p><i class="fas ${member.sex.toLowerCase() === 'male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex || 'Not available'}</p>
+                            <p><i class="fas ${member.sex === 'Male' ? 'fa-mars' : 'fa-venus'}"></i> ${member.sex}</p>
                             <p><i class="fas fa-book"></i> ${member.favoriteSubject || 'Not available'}</p>
                             <p><i class="fas fa-heart"></i> ${member.hobby || 'Not available'}</p>
-                            <p><i class="fas fa-memory"></i> "${member.memory ? member.memory.substring(0, 50) + (member.memory.length > 50 ? '...' : '') : 'Not available'}"</p>
+                            <p><i class="fas fa-memory"></i> "${member.memory || 'Not available'}"</p>
                         </div>
                     `;
                     
@@ -814,6 +784,11 @@
                 });
             }
             
+            // Extract Google Drive ID from URL
+            function extractGoogleDriveId(url) {
+                const match = url.match(/[-\w]{25,}/);
+                return match ? match[0] : null;
+            }
             
             // Update class gallery based on selected class
             function updateClassGallery() {
@@ -829,8 +804,9 @@
                 classGallery.classList.add('visible');
                 galleryContainer.innerHTML = '';
                 
-                // Use a placeholder image URL
-                const placeholderImage = `https://placehold.co/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
+                // In a real implementation, you would have actual class picture URLs
+                // For demonstration, we're using placeholder images
+                const placeholderImage = `https://via.placeholder.com/400x300/4b6cb7/ffffff?text=${encodeURIComponent(classValue + ' Class Photo')}`;
                 
                 const classPicture = document.createElement('div');
                 classPicture.className = 'class-picture';
@@ -858,18 +834,11 @@
                 
                 // Set photo or icon
                 modalPhotoContainer.innerHTML = '';
-                if (member.photo && member.photo !== 'N/A' && member.photo !== '') {
+                if (member.photo && member.photo !== 'N/A') {
                     const img = document.createElement('img');
-                    img.src = member.photo;
+                    img.src = `https://drive.google.com/thumbnail?id=${extractGoogleDriveId(member.photo)}&sz=w500`;
                     img.alt = member.name;
                     img.className = 'modal-photo';
-                    // Use the globally defined error handler
-                    img.onerror = function() {
-                        handleImageError(this);
-                        const placeholder = document.createElement('i');
-                        placeholder.className = 'fas fa-user modal-photo-placeholder';
-                        modalPhotoContainer.appendChild(placeholder);
-                    };
                     modalPhotoContainer.appendChild(img);
                 } else {
                     const placeholder = document.createElement('i');
@@ -908,20 +877,18 @@
                 }
             });
             
-            // Back to top functionality
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTop.classList.add('visible');
-                } else {
-                    backToTop.classList.remove('visible');
+            // Add event listeners to filters
+            classFilter.addEventListener('change', function() {
+                if (membersData.length > 0) {
+                    renderYearbook(membersData);
+                    updateClassGallery();
                 }
             });
             
-            backToTop.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+            sexFilter.addEventListener('change', function() {
+                if (membersData.length > 0) {
+                    renderYearbook(membersData);
+                }
             });
             
             // Load CSV data on page load
