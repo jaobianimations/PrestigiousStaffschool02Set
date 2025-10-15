@@ -574,66 +574,14 @@
             let membersData = [];
             let classPictures = {};
             
-            // Sample data for demonstration
-            const sampleMembers = [
-                {
-                    name: "Amina Johnson",
-                    sex: "Female",
-                    photo: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-                    favoriteSubject: "Mathematics",
-                    hobby: "Reading and Swimming",
-                    memory: "Winning the inter-house sports competition in Primary 4",
-                    phone: "+2348012345678",
-                    career: "Software Engineer",
-                    bio: "Amina is passionate about technology and education. She currently works at a leading tech company.",
-                    classHistory: ["Pre-NurseryA", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2A", "Primary 3A", "Primary 4A", "Primary 5A"]
-                },
-                {
-                    name: "Chinedu Okoro",
-                    sex: "Male",
-                    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-                    favoriteSubject: "Science",
-                    hobby: "Football and Chess",
-                    memory: "Our class trip to the national museum",
-                    phone: "+2348098765432",
-                    career: "Medical Doctor",
-                    bio: "Chinedu specializes in pediatrics and runs a free clinic for underprivileged children.",
-                    classHistory: ["Nursery 1B", "Nursery 2B", "Primary 1B", "Primary 2B", "Primary 3B", "Primary 4B", "Primary 5B"]
-                },
-                {
-                    name: "Fatima Bello",
-                    sex: "Female",
-                    photo: "",
-                    favoriteSubject: "English Language",
-                    hobby: "Writing and Photography",
-                    memory: "Performing in the school cultural day celebration",
-                    phone: "+2348054321678",
-                    career: "Journalist",
-                    bio: "Fatima is an award-winning journalist who focuses on human interest stories.",
-                    classHistory: ["Pre-NurseryA", "Nursery 1A", "Nursery 2A", "Primary 1A", "Primary 2A", "Primary 3A"]
-                },
-                {
-                    name: "Emeka Nwankwo",
-                    sex: "Male",
-                    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-                    favoriteSubject: "Social Studies",
-                    hobby: "Music and Traveling",
-                    memory: "Our class winning the debate competition",
-                    phone: "+2348076543210",
-                    career: "Business Consultant",
-                    bio: "Emeka runs his own consulting firm and mentors young entrepreneurs.",
-                    classHistory: ["Primary 1C", "Primary 2C", "Primary 3C", "Primary 4C", "Primary 5C"]
-                }
-            ];
-            
-            // Load CSV from file or use sample data
+            // Load CSV from file
             function loadCSVFromFile() {
                 const csvFile = 'The Prestigious Staff School Abuloma _02 Set.csv';
                 
                 fetch(csvFile)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Failed to load CSV file. Using sample data instead.');
+                            throw new Error('Failed to load CSV file. Make sure the file exists and is named correctly.');
                         }
                         return response.text();
                     })
@@ -643,31 +591,17 @@
                         loadingSection.style.display = 'none';
                     })
                     .catch(error => {
-                        console.log(error.message);
-                        // Use sample data if CSV file is not available
-                        useSampleData();
-                        // Hide loading section
+                        yearbook.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h3>Error loading data</h3>
+                                <p>${error.message}</p>
+                                <p>Please make sure "The Prestigious Staff School Abuloma _02 Set.csv" is in the same folder as this HTML file.</p>
+                            </div>
+                        `;
+                        // Hide loading section on error too
                         loadingSection.style.display = 'none';
                     });
-            }
-            
-            // Use sample data
-            function useSampleData() {
-                membersData = sampleMembers;
-                classPictures = {};
-                
-                // Process class history for gallery
-                membersData.forEach(member => {
-                    if (member.classHistory && member.classHistory.length > 0) {
-                        member.classHistory.forEach(className => {
-                            if (className && !classPictures[className]) {
-                                classPictures[className] = "";
-                            }
-                        });
-                    }
-                });
-                
-                processMembersData();
             }
             
             // Process CSV content
@@ -874,7 +808,7 @@
             }
             
             // Handle image loading errors
-            window.handleImageError = function(img) {
+            function handleImageError(img) {
                 console.log('Image failed to load:', img.src);
                 img.style.display = 'none';
                 const container = img.parentNode;
